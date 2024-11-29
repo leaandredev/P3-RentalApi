@@ -32,12 +32,52 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ErrorResponse"
+  /register:
+    post:
+      summary: Création d'un utilisateur
+      description: Création d'un nouvel utilisateur, avec envoi du token
+      operationId: registerUser
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RegisterRequest"
+      responses:
+        "200":
+          description: Création réussie
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TokenResponse"
+        "400":
+          description: Mauvaise requête
 
 components:
   schemas:
     LoginRequest:
       type: object
       properties:
+        email:
+          type: string
+          example: "user@example.com"
+          required:
+            - "true"
+        password:
+          type: string
+          format: password
+          example: "P@ssw0rd"
+          required:
+            - "true"
+
+    RegisterRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          example: "Prenom NOM"
+          required:
+            - "true"
         email:
           type: string
           example: "user@example.com"
