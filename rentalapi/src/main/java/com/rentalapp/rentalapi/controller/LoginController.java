@@ -17,6 +17,8 @@ import com.rentalapp.rentalapi.dto.LoginRequest;
 import com.rentalapp.rentalapi.dto.LoginResponse;
 import com.rentalapp.rentalapi.service.JWTService;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping("/api/auth")
 public class LoginController {
@@ -27,9 +29,9 @@ public class LoginController {
     @Autowired
     private AuthenticationManager authenticationManager;
 
-    @PostMapping("/login")
+    @PostMapping(value = "/login", consumes = { "application/json" })
     @ResponseBody
-    public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
+    public ResponseEntity<?> login(@Valid @RequestBody LoginRequest loginRequest) {
         try {
             Authentication authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(
