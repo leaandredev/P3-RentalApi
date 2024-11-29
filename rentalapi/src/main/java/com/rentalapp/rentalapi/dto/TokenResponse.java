@@ -3,10 +3,10 @@ package com.rentalapp.rentalapi.dto;
 import lombok.Data;
 
 @Data
-public class LoginResponse {
+public class TokenResponse {
     private String token;
 
-    public LoginResponse(String token) {
+    public TokenResponse(String token) {
         this.token = token;
     }
 

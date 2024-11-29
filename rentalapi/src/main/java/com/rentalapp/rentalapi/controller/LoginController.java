@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.rentalapp.rentalapi.dto.ErrorResponse;
 import com.rentalapp.rentalapi.dto.LoginRequest;
-import com.rentalapp.rentalapi.dto.LoginResponse;
+import com.rentalapp.rentalapi.dto.TokenResponse;
 import com.rentalapp.rentalapi.service.JWTService;
 
 import jakarta.validation.Valid;
@@ -39,7 +39,7 @@ public class LoginController {
                             loginRequest.getPassword()));
             System.out.println("Authentication successful");
 
-            return ResponseEntity.ok(new LoginResponse(jwtService.generateToken(authentication)));
+            return ResponseEntity.ok(new TokenResponse(jwtService.generateToken(authentication)));
 
         } catch (Exception e) {
             System.err.println("Authentication failed: " + e.getClass().getName() + " - " + e.getMessage());
