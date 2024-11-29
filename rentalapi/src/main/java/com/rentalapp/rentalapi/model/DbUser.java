@@ -13,8 +13,8 @@ import lombok.Data;
 
 @Data
 @Entity
-@Table(name = "USERS")
-public class User {
+@Table(name = "users")
+public class DbUser {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,5 +33,4 @@ public class User {
         this.createdAt = LocalDateTime.now();
         this.updatedAt = this.createdAt;
     }
-
 }
