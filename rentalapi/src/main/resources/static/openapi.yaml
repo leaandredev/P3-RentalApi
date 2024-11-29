@@ -1,0 +1,69 @@
+openapi: 3.0.3
+info:
+  title: Rental API
+  description: API de gestion pour l'application RentalApp.
+  version: 1.0.0
+servers:
+  - url: http://localhost:9000
+    description: Serveur local
+
+paths:
+  /login:
+    post:
+      summary: Authentification utilisateur
+      description: Permet aux utilisateurs de se connecter et de recevoir un token JWT.
+      operationId: loginUser
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LoginRequest"
+      responses:
+        "200":
+          description: Authentification réussie
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LoginResponse"
+        "401":
+          description: Identifiants invalides
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+components:
+  schemas:
+    LoginRequest:
+      type: object
+      properties:
+        email:
+          type: string
+          example: "user@example.com"
+          required:
+            - "true"
+        password:
+          type: string
+          format: password
+          example: "P@ssw0rd"
+          required:
+            - "true"
+
+    LoginResponse:
+      type: object
+      properties:
+        token:
+          type: string
+          example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+          required:
+            - "true"
+
+    ErrorResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          example: "Invalid credentials"
+          required:
+            - "true"
