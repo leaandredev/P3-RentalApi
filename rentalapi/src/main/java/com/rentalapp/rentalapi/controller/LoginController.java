@@ -33,7 +33,7 @@ public class LoginController {
         try {
             Authentication authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(
-                            loginRequest.getLogin(),
+                            loginRequest.getEmail(),
                             loginRequest.getPassword()));
             System.out.println("Authentication successful");
 
