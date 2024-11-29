@@ -46,7 +46,7 @@ public class LoginController {
         } catch (Exception e) {
             System.err.println("Register failed: " + e.getClass().getName() + " - " + e.getMessage());
             e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ErrorResponse(e.getMessage()));
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }
 
     }
