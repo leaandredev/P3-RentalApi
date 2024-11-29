@@ -6,12 +6,14 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.rentalapp.rentalapi.dto.LoginRequest;
 import com.rentalapp.rentalapi.service.JWTService;
 
 @RestController
+@RequestMapping("/api/auth")
 public class LoginController {
 
     @Autowired
@@ -22,10 +24,12 @@ public class LoginController {
 
     @PostMapping("/login")
     public String login(@RequestBody LoginRequest loginRequest) {
+        System.out.println(loginRequest.getLogin());
+        System.out.println(loginRequest.getPassword());
         try {
             Authentication authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(
-                            loginRequest.getEmail(),
+                            loginRequest.getLogin(),
                             loginRequest.getPassword()));
             System.out.println("Authentication successful");
 
