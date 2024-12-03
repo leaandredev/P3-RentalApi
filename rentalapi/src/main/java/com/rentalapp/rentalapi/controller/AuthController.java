@@ -1,6 +1,5 @@
 package com.rentalapp.rentalapi.controller;
 
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -38,15 +37,10 @@ public class AuthController {
     @ApiResponse(responseCode = "401", description = "Échec de l'authentification", content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     @PostMapping(value = "/login", consumes = { "application/json" })
     @ResponseBody
+    
     public ResponseEntity<?> login(@Valid @RequestBody LoginRequest loginRequest) {
-        try {
-            return ResponseEntity
-                    .ok(authService.authentificate(loginRequest.getEmail(), loginRequest.getPassword()));
-        } catch (Exception e) {
-            System.err.println("Authentication failed: " + e.getClass().getName() + " - " + e.getMessage());
-            e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ErrorResponse(e.getMessage()));
-        }
+        return ResponseEntity
+                .ok(authService.login(loginRequest.getEmail(), loginRequest.getPassword()));
     }
 
     @Operation(description = "Enregistrement de l'utilisateur")
@@ -55,13 +49,7 @@ public class AuthController {
     @PostMapping(value = "/register", consumes = { "application/json" })
     @ResponseBody
     public ResponseEntity<?> register(@Valid @RequestBody RegisterRequest registerRequest) {
-        try {
-            return ResponseEntity.ok(authService.login(registerRequest));
-        } catch (Exception e) {
-            System.err.println("Register failed: " + e.getClass().getName() + " - " + e.getMessage());
-            e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
-        }
+        return ResponseEntity.ok(authService.register(registerRequest));
 
     }
 
@@ -71,13 +59,7 @@ public class AuthController {
     @GetMapping("/me")
     @ResponseBody
     public ResponseEntity<?> me(Authentication authentication) {
-        try {
-            return ResponseEntity.ok(authService.getAuthenticatedUser(authentication.getName()));
-        } catch (Exception e) {
-            System.err.println("get me information failed: " + e.getClass().getName() + " - " + e.getMessage());
-            e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
-        }
+        return ResponseEntity.ok(authService.getAuthenticatedUser(authentication.getName()));
     }
 
 }

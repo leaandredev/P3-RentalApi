@@ -33,6 +33,9 @@ public class User implements UserDetails {
     @Column(name = "updated_at", nullable = false)
     private LocalDateTime updatedAt;
 
+    public User() {
+    }
+
     public User(String email, String name, String password) {
         this.email = email;
         this.name = name;
