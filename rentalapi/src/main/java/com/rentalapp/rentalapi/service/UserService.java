@@ -9,7 +9,10 @@ import com.rentalapp.rentalapi.exception.DuplicateEntryException;
 import com.rentalapp.rentalapi.model.User;
 import com.rentalapp.rentalapi.repository.UserRepository;
 
+import lombok.extern.slf4j.Slf4j;
+
 @Service
+@Slf4j
 public class UserService {
 
     private final UserRepository userRepository;
@@ -31,7 +34,7 @@ public class UserService {
                     passwordEncoder.encode(registerRequest.getPassword()));
             userRepository.save(user);
 
-            System.out.println("Register successful");
+            log.info("Register successful");
             return user;
         } catch (DataIntegrityViolationException e) {
             throw new DuplicateEntryException("L'utilisateur " + registerRequest.getEmail() + " existe déjà");

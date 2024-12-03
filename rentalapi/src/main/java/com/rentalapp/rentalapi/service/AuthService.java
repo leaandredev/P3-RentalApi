@@ -11,7 +11,10 @@ import com.rentalapp.rentalapi.dto.UserResponse;
 import com.rentalapp.rentalapi.model.User;
 import com.rentalapp.rentalapi.repository.UserRepository;
 
+import lombok.extern.slf4j.Slf4j;
+
 @Service
+@Slf4j
 public class AuthService {
 
     private final AuthenticationManager authenticationManager;
@@ -35,8 +38,7 @@ public class AuthService {
                 new UsernamePasswordAuthenticationToken(
                         email,
                         password));
-        System.out.println("Authentication successful");
-
+        log.info("Authentication successful");
         return new TokenResponse(jwtService.generateToken(authentication));
     }
 
