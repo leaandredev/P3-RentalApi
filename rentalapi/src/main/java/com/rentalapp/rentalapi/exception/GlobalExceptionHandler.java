@@ -12,16 +12,21 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import com.rentalapp.rentalapi.dto.ErrorResponse;
 
+import lombok.extern.slf4j.Slf4j;
+
 @ControllerAdvice
+@Slf4j
 public class GlobalExceptionHandler {
 
     @ExceptionHandler({ AccessDeniedException.class, UnauthorizedException.class, AuthenticationException.class })
     public ResponseEntity<ErrorResponse> handleAccessDeniedException(Exception exception) {
+        log.error(exception.getMessage(), exception);
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED.value()).body(new ErrorResponse("Accès non authorisé"));
     }
 
     @ExceptionHandler({ HttpMessageNotReadableException.class, DuplicateEntryException.class })
     public ResponseEntity<ErrorResponse> handleBadequest(Exception exception) {
+        log.error(exception.getMessage(), exception);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST.value()).body(new ErrorResponse(exception.getMessage()));
     }
 
@@ -31,15 +36,13 @@ public class GlobalExceptionHandler {
         for (FieldError error : exception.getBindingResult().getFieldErrors()) {
             errors += error.getDefaultMessage() + ". ";
         }
+        log.error(errors, exception);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponse(errors));
     }
 
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<ErrorResponse> handleGlobalException(Exception e) {
-        System.err.println("Error: " + e.getClass().getName() + " - " + e.getMessage());
-        e.printStackTrace();
-
+    public ResponseEntity<ErrorResponse> handleGlobalException(Exception exception) {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR.value())
-                .body(new ErrorResponse(e.getMessage()));
+                .body(new ErrorResponse(exception.getMessage()));
     }
 }
