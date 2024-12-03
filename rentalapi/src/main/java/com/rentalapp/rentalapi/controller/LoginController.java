@@ -66,7 +66,7 @@ public class LoginController {
         } catch (Exception e) {
             System.err.println("get me information failed: " + e.getClass().getName() + " - " + e.getMessage());
             e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null));
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
         }
     }
 
