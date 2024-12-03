@@ -41,7 +41,6 @@ public class SpringSecurityConfig {
                                 .permitAll()
                                 .anyRequest().authenticated())
                 .oauth2ResourceServer((oauth2) -> oauth2.jwt(Customizer.withDefaults()))
-                .httpBasic(Customizer.withDefaults())
                 .build();
     }
 
@@ -50,7 +49,8 @@ public class SpringSecurityConfig {
             throws Exception {
         AuthenticationManagerBuilder authenticationManagerBuilder = http
                 .getSharedObject(AuthenticationManagerBuilder.class);
-        authenticationManagerBuilder.userDetailsService(customUserDetailsService)
+        authenticationManagerBuilder
+                .userDetailsService(customUserDetailsService)
                 .passwordEncoder(bCryptPasswordEncoder);
         return authenticationManagerBuilder.build();
     }
@@ -70,7 +70,7 @@ public class SpringSecurityConfig {
 
     @Bean
     public JwtDecoder jwtDecoder() {
-        SecretKeySpec secretKey = new SecretKeySpec(this.jwtKey.getBytes(), 0, this.jwtKey.getBytes().length, "RSA");
-        return NimbusJwtDecoder.withSecretKey(secretKey).macAlgorithm(MacAlgorithm.HS256).build();
+        return NimbusJwtDecoder.withSecretKey(new SecretKeySpec(this.jwtKey.getBytes(), "HmacSHA256")).build();
     }
+
 }
