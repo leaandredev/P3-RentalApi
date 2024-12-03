@@ -4,7 +4,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.rentalapp.rentalapi.dto.RegisterRequest;
-import com.rentalapp.rentalapi.model.DbUser;
+import com.rentalapp.rentalapi.model.User;
 import com.rentalapp.rentalapi.repository.UserRepository;
 
 @Service
@@ -20,11 +20,11 @@ public class UserService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    public DbUser createUser(RegisterRequest registerRequest) {
-        DbUser dbUser = new DbUser();
-        dbUser.setEmail(registerRequest.getEmail());
-        dbUser.setName(registerRequest.getName());
-        dbUser.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
+    public User createUser(RegisterRequest registerRequest) {
+        User dbUser = new User(
+                registerRequest.getEmail(),
+                registerRequest.getName(),
+                passwordEncoder.encode(registerRequest.getPassword()));
         userRepository.save(dbUser);
 
         System.out.println("Register successful");

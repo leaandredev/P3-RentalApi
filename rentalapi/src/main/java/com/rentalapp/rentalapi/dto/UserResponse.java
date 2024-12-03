@@ -2,7 +2,7 @@ package com.rentalapp.rentalapi.dto;
 
 import java.time.format.DateTimeFormatter;
 
-import com.rentalapp.rentalapi.model.DbUser;
+import com.rentalapp.rentalapi.model.User;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
@@ -30,12 +30,12 @@ public class UserResponse {
     @Schema(example = "2024/12/02")
     private String updated_at;
 
-    public UserResponse(DbUser dbUser) {
-        this.id = dbUser.getId();
-        this.email = dbUser.getEmail();
-        this.name = dbUser.getName();
-        this.created_at = dbUser.getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy/MM/dd"));
-        this.updated_at = dbUser.getUpdatedAt().format(DateTimeFormatter.ofPattern("yyyy/MM/dd"));
+    public UserResponse(User user) {
+        this.id = user.getId();
+        this.email = user.getEmail();
+        this.name = user.getName();
+        this.created_at = user.getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy/MM/dd"));
+        this.updated_at = user.getUpdatedAt().format(DateTimeFormatter.ofPattern("yyyy/MM/dd"));
     }
 
 }

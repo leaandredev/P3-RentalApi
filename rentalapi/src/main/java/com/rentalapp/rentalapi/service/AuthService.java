@@ -1,6 +1,5 @@
 package com.rentalapp.rentalapi.service;
 
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -9,7 +8,7 @@ import org.springframework.stereotype.Service;
 import com.rentalapp.rentalapi.dto.RegisterRequest;
 import com.rentalapp.rentalapi.dto.TokenResponse;
 import com.rentalapp.rentalapi.dto.UserResponse;
-import com.rentalapp.rentalapi.model.DbUser;
+import com.rentalapp.rentalapi.model.User;
 import com.rentalapp.rentalapi.repository.UserRepository;
 
 @Service
@@ -42,12 +41,12 @@ public class AuthService {
     }
 
     public TokenResponse login(RegisterRequest registerRequest) {
-        DbUser user = userService.createUser(registerRequest);
+        User user = userService.createUser(registerRequest);
         return this.authentificate(user.getEmail(), registerRequest.getPassword());
     }
 
     public UserResponse getAuthenticatedUser(String email) {
-        DbUser dbUser = userRepository.findByEmail(email);
+        User dbUser = userRepository.findByEmail(email);
         return new UserResponse(dbUser);
     }
 }
