@@ -59,9 +59,15 @@ public class LoginController {
     }
 
     @GetMapping("/me")
-    public ResponseEntity<UserResponse> me(Authentication authentication) {
-        DbUser dbUser = userRepository.findByEmail(authentication.getName());
-        return ResponseEntity.ok(new UserResponse(dbUser));
+    public ResponseEntity<?> me(Authentication authentication) {
+        try {
+            DbUser dbUser = userRepository.findByEmail(authentication.getName());
+            return ResponseEntity.ok(new UserResponse(dbUser));
+        } catch (Exception e) {
+            System.err.println("get me information failed: " + e.getClass().getName() + " - " + e.getMessage());
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null));
+        }
     }
 
 }
