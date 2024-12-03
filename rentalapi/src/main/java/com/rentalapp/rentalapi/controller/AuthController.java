@@ -3,6 +3,7 @@ package com.rentalapp.rentalapi.controller;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,25 +17,24 @@ import com.rentalapp.rentalapi.dto.TokenResponse;
 import com.rentalapp.rentalapi.dto.UserResponse;
 import com.rentalapp.rentalapi.model.DbUser;
 import com.rentalapp.rentalapi.repository.UserRepository;
-import com.rentalapp.rentalapi.service.UserService;
+import com.rentalapp.rentalapi.service.AuthService;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.validation.Valid;
-import org.springframework.web.bind.annotation.GetMapping;
 
 @RestController
 @RequestMapping("/api/auth")
-public class LoginController {
+public class AuthController {
 
-    private final UserService userService;
+    private final AuthService authService;
 
     private final UserRepository userRepository;
 
-    LoginController(UserService userService, UserRepository userRepository) {
-        this.userService = userService;
+    AuthController(AuthService authService, UserRepository userRepository) {
+        this.authService = authService;
         this.userRepository = userRepository;
     }
 
@@ -46,7 +46,7 @@ public class LoginController {
     public ResponseEntity<?> login(@Valid @RequestBody LoginRequest loginRequest) {
         try {
             return ResponseEntity
-                    .ok(userService.authentificateUser(loginRequest.getEmail(), loginRequest.getPassword()));
+                    .ok(authService.authentificate(loginRequest.getEmail(), loginRequest.getPassword()));
         } catch (Exception e) {
             System.err.println("Authentication failed: " + e.getClass().getName() + " - " + e.getMessage());
             e.printStackTrace();
@@ -61,8 +61,7 @@ public class LoginController {
     @ResponseBody
     public ResponseEntity<?> register(@Valid @RequestBody RegisterRequest registerRequest) {
         try {
-            DbUser dbUser = userService.createUser(registerRequest);
-            return ResponseEntity.ok(userService.authentificateUser(dbUser.getEmail(), registerRequest.getPassword()));
+            return ResponseEntity.ok(authService.login(registerRequest));
         } catch (Exception e) {
             System.err.println("Register failed: " + e.getClass().getName() + " - " + e.getMessage());
             e.printStackTrace();
@@ -78,8 +77,7 @@ public class LoginController {
     @ResponseBody
     public ResponseEntity<?> me(Authentication authentication) {
         try {
-            DbUser dbUser = userRepository.findByEmail(authentication.getName());
-            return ResponseEntity.ok(new UserResponse(dbUser));
+            return ResponseEntity.ok(authService.getAuthenticatedUser(authentication.getName()));
         } catch (Exception e) {
             System.err.println("get me information failed: " + e.getClass().getName() + " - " + e.getMessage());
             e.printStackTrace();
