@@ -5,13 +5,23 @@ import java.time.format.DateTimeFormatter;
 import com.rentalapp.rentalapi.model.DbUser;
 
 import lombok.Data;
+import lombok.NonNull;
 
 @Data
 public class UserResponse {
+    @NonNull
     private Integer id;
+
+    @NonNull
     private String email;
+
+    @NonNull
     private String name;
+
+    @NonNull
     private String created_at;
+
+    @NonNull
     private String updated_at;
 
     public UserResponse(DbUser dbUser) {

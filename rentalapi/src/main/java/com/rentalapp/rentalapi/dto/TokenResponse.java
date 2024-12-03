@@ -1,13 +1,15 @@
 package com.rentalapp.rentalapi.dto;
 
 import lombok.Data;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 
 @Data
-public class TokenResponse {
-    private String token;
+@RequiredArgsConstructor
 
-    public TokenResponse(String token) {
-        this.token = token;
-    }
+public class TokenResponse {
+
+    @NonNull
+    private String token;
 
 }
