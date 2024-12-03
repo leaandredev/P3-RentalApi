@@ -15,8 +15,6 @@ import com.rentalapp.rentalapi.dto.LoginRequest;
 import com.rentalapp.rentalapi.dto.RegisterRequest;
 import com.rentalapp.rentalapi.dto.TokenResponse;
 import com.rentalapp.rentalapi.dto.UserResponse;
-import com.rentalapp.rentalapi.model.DbUser;
-import com.rentalapp.rentalapi.repository.UserRepository;
 import com.rentalapp.rentalapi.service.AuthService;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -31,11 +29,8 @@ public class AuthController {
 
     private final AuthService authService;
 
-    private final UserRepository userRepository;
-
-    AuthController(AuthService authService, UserRepository userRepository) {
+    AuthController(AuthService authService) {
         this.authService = authService;
-        this.userRepository = userRepository;
     }
 
     @Operation(description = "Connexion de l'utilisateur")
