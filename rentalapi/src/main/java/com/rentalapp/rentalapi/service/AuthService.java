@@ -30,7 +30,7 @@ public class AuthService {
         this.userRepository = userRepository;
     }
 
-    public TokenResponse authentificate(String email, String password) {
+    public TokenResponse login(String email, String password) {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         email,
@@ -40,13 +40,13 @@ public class AuthService {
         return new TokenResponse(jwtService.generateToken(authentication));
     }
 
-    public TokenResponse login(RegisterRequest registerRequest) {
+    public TokenResponse register(RegisterRequest registerRequest) {
         User user = userService.createUser(registerRequest);
-        return this.authentificate(user.getEmail(), registerRequest.getPassword());
+        return this.login(user.getEmail(), registerRequest.getPassword());
     }
 
     public UserResponse getAuthenticatedUser(String email) {
-        User dbUser = userRepository.findByEmail(email);
-        return new UserResponse(dbUser);
+        User user = userRepository.findByEmail(email);
+        return new UserResponse(user);
     }
 }

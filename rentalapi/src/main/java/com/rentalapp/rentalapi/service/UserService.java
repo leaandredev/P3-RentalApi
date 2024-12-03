@@ -1,9 +1,11 @@
 package com.rentalapp.rentalapi.service;
 
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.rentalapp.rentalapi.dto.RegisterRequest;
+import com.rentalapp.rentalapi.exception.DuplicateEntryException;
 import com.rentalapp.rentalapi.model.User;
 import com.rentalapp.rentalapi.repository.UserRepository;
 
@@ -21,13 +23,18 @@ public class UserService {
     }
 
     public User createUser(RegisterRequest registerRequest) {
-        User dbUser = new User(
-                registerRequest.getEmail(),
-                registerRequest.getName(),
-                passwordEncoder.encode(registerRequest.getPassword()));
-        userRepository.save(dbUser);
+        try {
 
-        System.out.println("Register successful");
-        return dbUser;
+            User user = new User(
+                    registerRequest.getEmail(),
+                    registerRequest.getName(),
+                    passwordEncoder.encode(registerRequest.getPassword()));
+            userRepository.save(user);
+
+            System.out.println("Register successful");
+            return user;
+        } catch (DataIntegrityViolationException e) {
+            throw new DuplicateEntryException("L'utilisateur " + registerRequest.getEmail() + " existe déjà");
+        }
     }
 }
