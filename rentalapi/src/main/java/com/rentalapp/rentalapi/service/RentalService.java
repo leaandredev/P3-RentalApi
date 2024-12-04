@@ -1,10 +1,13 @@
 package com.rentalapp.rentalapi.service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import org.springframework.stereotype.Service;
 
 import com.rentalapp.rentalapi.dto.RentalResponse;
+import com.rentalapp.rentalapi.exception.NoEntryFoundException;
+import com.rentalapp.rentalapi.model.Rental;
 import com.rentalapp.rentalapi.repository.RentalRepository;
 
 import lombok.extern.slf4j.Slf4j;
@@ -23,6 +26,15 @@ public class RentalService {
         return rentalRepository.findAll().stream()
                 .map(rental -> new RentalResponse(rental))
                 .toList();
+    }
+
+    public RentalResponse getRentalById(Integer rentalId) {
+        try {
+            Rental rental = rentalRepository.findById(rentalId).get();
+            return new RentalResponse(rental);
+        } catch (NoSuchElementException e) {
+            throw new NoEntryFoundException("La location avec l'id " + rentalId + " n'existe pas.");
+        }
     }
 
 }
