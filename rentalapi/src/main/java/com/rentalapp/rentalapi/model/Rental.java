@@ -15,14 +15,20 @@ import lombok.Data;
 
 @Data
 @Entity
-@Table(name = "RENTALS")
+@Table(name = "rentals")
 public class Rental {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
     private String name;
-    private Float surface;
-    private Float price;
+
+    @Column(precision = 10, scale = 0)
+    private Integer surface;
+
+    @Column(precision = 10, scale = 0)
+    private Integer price;
+
     private String picture;
     private String description;
 
