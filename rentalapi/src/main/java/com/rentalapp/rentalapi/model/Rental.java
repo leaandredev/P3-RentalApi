@@ -2,6 +2,8 @@ package com.rentalapp.rentalapi.model;
 
 import java.time.LocalDateTime;
 
+import com.rentalapp.rentalapi.dto.RentalRequest;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -43,6 +45,15 @@ public class Rental {
     private LocalDateTime updatedAt;
 
     public Rental() {
+    }
+
+    public Rental(User owner, RentalRequest rentalRequest) {
+        this.name = rentalRequest.getName();
+        this.surface = Integer.valueOf(rentalRequest.getSurface());
+        this.price = Integer.valueOf(rentalRequest.getPrice());
+        this.picture = rentalRequest.getPicture().getOriginalFilename();
+        this.description = rentalRequest.getDescription();
+        this.owner = owner;
     }
 
     @PrePersist

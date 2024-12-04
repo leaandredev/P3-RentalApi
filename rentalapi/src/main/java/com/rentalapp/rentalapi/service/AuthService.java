@@ -47,8 +47,11 @@ public class AuthService {
         return this.login(user.getEmail(), registerRequest.getPassword());
     }
 
-    public UserResponse getAuthenticatedUser(String email) {
-        User user = userRepository.findByEmail(email);
-        return new UserResponse(user);
+    public UserResponse getAuthenticatedUserResponse(Authentication authentication) {
+        return new UserResponse(this.getAuthenticatedUser(authentication));
+    }
+
+    public User getAuthenticatedUser(Authentication authentication) {
+        return userRepository.findByEmail(authentication.getName());
     }
 }
