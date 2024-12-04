@@ -47,11 +47,11 @@ public class Rental {
     public Rental() {
     }
 
-    public Rental(User owner, RentalRequest rentalRequest) {
+    public Rental(User owner, RentalRequest rentalRequest, String filePath) {
         this.name = rentalRequest.getName();
         this.surface = Integer.valueOf(rentalRequest.getSurface());
         this.price = Integer.valueOf(rentalRequest.getPrice());
-        this.picture = rentalRequest.getPicture().getOriginalFilename();
+        this.picture = filePath;
         this.description = rentalRequest.getDescription();
         this.owner = owner;
     }

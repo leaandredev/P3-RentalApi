@@ -20,8 +20,11 @@ public class RentalService {
 
     private final RentalRepository rentalRepository;
 
-    RentalService(RentalRepository rentalRepository) {
+    private final FileService fileService;
+
+    public RentalService(RentalRepository rentalRepository, FileService fileService) {
         this.rentalRepository = rentalRepository;
+        this.fileService = fileService;
     }
 
     public List<RentalResponse> getAlls() {
@@ -46,7 +49,8 @@ public class RentalService {
     }
 
     public Rental createRental(User owner, RentalRequest rentalRequest) {
-        Rental rental = new Rental(owner, rentalRequest);
+        String filePath = fileService.saveFile(rentalRequest.getPicture());
+        Rental rental = new Rental(owner, rentalRequest, filePath);
         rentalRepository.save(rental);
 
         return rental;
