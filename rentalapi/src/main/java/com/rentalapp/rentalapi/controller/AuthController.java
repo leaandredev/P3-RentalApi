@@ -37,7 +37,7 @@ public class AuthController {
     @ApiResponse(responseCode = "401", description = "Échec de l'authentification", content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     @PostMapping(value = "/login", consumes = { "application/json" })
     @ResponseBody
-    
+
     public ResponseEntity<?> login(@Valid @RequestBody LoginRequest loginRequest) {
         return ResponseEntity
                 .ok(authService.login(loginRequest.getEmail(), loginRequest.getPassword()));
@@ -59,7 +59,7 @@ public class AuthController {
     @GetMapping("/me")
     @ResponseBody
     public ResponseEntity<?> me(Authentication authentication) {
-        return ResponseEntity.ok(authService.getAuthenticatedUser(authentication.getName()));
+        return ResponseEntity.ok(authService.getAuthenticatedUserResponse(authentication));
     }
 
 }
