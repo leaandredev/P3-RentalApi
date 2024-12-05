@@ -5,6 +5,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.rentalapp.rentalapi.dto.RegisterRequest;
+import com.rentalapp.rentalapi.dto.UserResponse;
 import com.rentalapp.rentalapi.exception.DuplicateEntryException;
 import com.rentalapp.rentalapi.model.User;
 import com.rentalapp.rentalapi.repository.UserRepository;
@@ -23,6 +24,10 @@ public class UserService {
             PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+    }
+
+    public UserResponse getUserById(Integer id) {
+        return new UserResponse(userRepository.findById(id).get());
     }
 
     public User createUser(RegisterRequest registerRequest) {
