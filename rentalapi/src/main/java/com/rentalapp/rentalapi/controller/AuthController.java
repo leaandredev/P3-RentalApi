@@ -33,8 +33,8 @@ public class AuthController {
     }
 
     @Operation(description = "Connexion de l'utilisateur")
-    @ApiResponse(responseCode = "200", description = "Authentification réussie", content = @Content(schema = @Schema(implementation = TokenResponse.class)))
-    @ApiResponse(responseCode = "401", description = "Échec de l'authentification", content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
+    @ApiResponse(responseCode = "200", description = "Authentification réussie", content = @Content(mediaType = "application/json", schema = @Schema(implementation = TokenResponse.class)))
+    @ApiResponse(responseCode = "401", description = "Échec de l'authentification", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class)))
     @PostMapping(value = "/login", consumes = { "application/json" })
     @ResponseBody
 
@@ -44,7 +44,7 @@ public class AuthController {
     }
 
     @Operation(description = "Enregistrement de l'utilisateur")
-    @ApiResponse(responseCode = "200", description = "Enregistrement et authentification réussie", content = @Content(schema = @Schema(implementation = TokenResponse.class)))
+    @ApiResponse(responseCode = "200", description = "Enregistrement et authentification réussie", content = @Content(mediaType = "application/json", schema = @Schema(implementation = TokenResponse.class)))
     @ApiResponse(responseCode = "400", description = "Échec de l'enregistrement")
     @PostMapping(value = "/register", consumes = { "application/json" })
     @ResponseBody
