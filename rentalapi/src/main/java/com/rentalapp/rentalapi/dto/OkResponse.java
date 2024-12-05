@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Data
 public class OkResponse {
-    @Schema(example = "Le champ email est obligatoire")
+    @Schema(example = "Rental created !")
     private String message;
 
     public OkResponse() {
