@@ -40,6 +40,12 @@ public class Message {
     public Message() {
     }
 
+    public Message(String message, Rental rental, User user) {
+        this.message = message;
+        this.rental = rental;
+        this.user = user;
+    }
+
     @PrePersist
     protected void onCreate() {
         this.createdAt = LocalDateTime.now();
