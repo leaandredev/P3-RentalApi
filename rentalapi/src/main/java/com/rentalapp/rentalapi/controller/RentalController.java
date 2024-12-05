@@ -46,8 +46,7 @@ public class RentalController {
     @ApiResponse(responseCode = "401", description = "Échec de l'authentification", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class)))
     @GetMapping
     public ResponseEntity<?> getAllRentals(Authentication authentication) {
-        User owner = this.authService.getAuthenticatedUser(authentication);
-        return ResponseEntity.ok(Map.of("rentals", rentalService.getAllByOwner(owner)));
+        return ResponseEntity.ok(Map.of("rentals", rentalService.getAlls()));
     }
 
     @Operation(description = "Détail d'une location")
