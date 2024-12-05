@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 
 @RestController
 @RequestMapping("/api/rentals")
@@ -46,6 +47,12 @@ public class RentalController {
         User owner = this.authService.getAuthenticatedUser(authentication);
         rentalService.createRental(owner, rentalRequest);
         return ResponseEntity.ok(new OkResponse("Rental created !"));
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<?> updateRental(@PathVariable String id, @ModelAttribute RentalRequest rentalRequest) {
+        rentalService.updateRental(Integer.valueOf(id), rentalRequest);
+        return ResponseEntity.ok(new OkResponse("Rental updated !"));
     }
 
 }
