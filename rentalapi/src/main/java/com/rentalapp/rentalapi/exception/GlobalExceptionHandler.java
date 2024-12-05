@@ -40,6 +40,12 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponse(errors));
     }
 
+    @ExceptionHandler(NoEntryFoundException.class)
+    public ResponseEntity<ErrorResponse> handleNoEntryFoundExceptions(NoEntryFoundException exception) {
+        log.error(exception.getMessage(), exception);
+        return ResponseEntity.status(HttpStatus.NOT_FOUND.value()).body(new ErrorResponse(exception.getMessage()));
+    }
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponse> handleGlobalException(Exception exception) {
         log.error(exception.getStackTrace().toString(), exception);

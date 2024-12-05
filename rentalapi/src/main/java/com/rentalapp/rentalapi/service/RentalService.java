@@ -56,4 +56,20 @@ public class RentalService {
         return rental;
     }
 
+    public Rental updateRental(Integer rentalId, RentalRequest rentalRequest) {
+        try {
+            Rental rental = rentalRepository.findById(rentalId).get();
+
+            rental.setName(rentalRequest.getName());
+            rental.setPrice(Integer.valueOf(rentalRequest.getPrice()));
+            rental.setSurface(Integer.valueOf(rentalRequest.getSurface()));
+            rental.setDescription(rentalRequest.getDescription());
+
+            rentalRepository.save(rental);
+            return rental;
+        } catch (NoSuchElementException e) {
+            throw new NoEntryFoundException("La location avec l'id " + rentalId + " n'existe pas.");
+        }
+    }
+
 }

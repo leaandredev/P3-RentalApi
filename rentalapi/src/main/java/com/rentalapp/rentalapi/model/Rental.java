@@ -2,6 +2,8 @@ package com.rentalapp.rentalapi.model;
 
 import java.time.LocalDateTime;
 
+import org.hibernate.annotations.DynamicUpdate;
+
 import com.rentalapp.rentalapi.dto.RentalRequest;
 
 import jakarta.persistence.Column;
@@ -17,6 +19,7 @@ import lombok.Data;
 
 @Data
 @Entity
+@DynamicUpdate
 @Table(name = "rentals")
 public class Rental {
     @Id
