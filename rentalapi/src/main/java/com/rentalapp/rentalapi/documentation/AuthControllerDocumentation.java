@@ -5,7 +5,6 @@ import org.springframework.security.core.Authentication;
 
 import com.rentalapp.rentalapi.dto.request.LoginRequest;
 import com.rentalapp.rentalapi.dto.request.RegisterRequest;
-import com.rentalapp.rentalapi.dto.response.ErrorResponse;
 import com.rentalapp.rentalapi.dto.response.TokenResponse;
 import com.rentalapp.rentalapi.dto.response.UserResponse;
 
@@ -20,16 +19,13 @@ public interface AuthControllerDocumentation {
 
     @Operation(summary = "Login", description = "Log a user")
     @ApiResponse(responseCode = "200", description = "Authenticated successfully", content = @Content(mediaType = "application/json", schema = @Schema(implementation = TokenResponse.class)))
-    @ApiResponse(responseCode = "401", description = "Invalid credentials, access denied", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class)))
     public abstract ResponseEntity<TokenResponse> login(LoginRequest loginRequest);
 
     @Operation(summary = "Register", description = "Register a new user")
     @ApiResponse(responseCode = "200", description = "Registerd successfully", content = @Content(mediaType = "application/json", schema = @Schema(implementation = TokenResponse.class)))
-    @ApiResponse(responseCode = "400", description = "Invalid request for new user register")
     public abstract ResponseEntity<TokenResponse> register(RegisterRequest registerRequest);
 
     @Operation(summary = "Me", description = "Get authenticated user informations")
     @ApiResponse(responseCode = "200", description = "User data retrieved successfully", content = @Content(schema = @Schema(implementation = UserResponse.class)))
-    @ApiResponse(responseCode = "401", description = "Invalid credentials, access denied", content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     public abstract ResponseEntity<UserResponse> me(Authentication authentication);
 }

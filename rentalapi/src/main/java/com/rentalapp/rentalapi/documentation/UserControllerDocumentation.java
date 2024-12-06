@@ -2,7 +2,6 @@ package com.rentalapp.rentalapi.documentation;
 
 import org.springframework.http.ResponseEntity;
 
-import com.rentalapp.rentalapi.dto.response.ErrorResponse;
 import com.rentalapp.rentalapi.dto.response.UserResponse;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -17,7 +16,6 @@ public interface UserControllerDocumentation {
 
     @Operation(summary = "Get User", description = "Get user details")
     @ApiResponse(responseCode = "200", description = "User successfully retrieved", content = @Content(schema = @Schema(implementation = UserResponse.class)))
-    @ApiResponse(responseCode = "401", description = "Invalid credentials, access denied", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class)))
     public abstract ResponseEntity<UserResponse> getUser(
             @Parameter(description = "User ID", required = true) String id);
 
