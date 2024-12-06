@@ -3,10 +3,8 @@ package com.rentalapp.rentalapi.service;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
-import com.rentalapp.rentalapi.dto.request.RegisterRequest;
-import com.rentalapp.rentalapi.dto.response.UserResponse;
 import com.rentalapp.rentalapi.exception.DuplicateEntryException;
-import com.rentalapp.rentalapi.mapper.UserMapper;
+import com.rentalapp.rentalapi.exception.NoEntryFoundException;
 import com.rentalapp.rentalapi.model.User;
 import com.rentalapp.rentalapi.repository.UserRepository;
 
@@ -18,26 +16,27 @@ public class UserService {
 
     private final UserRepository userRepository;
 
-    private final UserMapper userMapper;
-
-    UserService(UserRepository userRepository, UserMapper userMapper) {
+    UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
-        this.userMapper = userMapper;
     }
 
-    public UserResponse getUserById(Integer id) {
-        return userMapper.entityToResponse(userRepository.findById(id).get());
+    public User getUserById(Integer userId) {
+        return userRepository.findById(userId)
+                .orElseThrow(() -> new NoEntryFoundException("L'utilisateur avec l'id " + userId + " n'existe pas."));
     }
 
-    public User createUser(RegisterRequest registerRequest) {
+    public User getUserByEmail(String email) {
+        return userRepository.findByEmail(email);
+    }
+
+    public User saveUser(User user) {
         try {
-            User user = userMapper.requestToEntity(registerRequest);
             userRepository.save(user);
 
-            log.info("Register successful");
+            log.info("user saved");
             return user;
         } catch (DataIntegrityViolationException e) {
-            throw new DuplicateEntryException("L'utilisateur " + registerRequest.getEmail() + " existe déjà");
+            throw new DuplicateEntryException("L'utilisateur " + user.getEmail() + " existe déjà");
         }
     }
 }

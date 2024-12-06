@@ -14,7 +14,10 @@ import com.rentalapp.rentalapi.dto.request.RegisterRequest;
 import com.rentalapp.rentalapi.dto.response.ErrorResponse;
 import com.rentalapp.rentalapi.dto.response.TokenResponse;
 import com.rentalapp.rentalapi.dto.response.UserResponse;
+import com.rentalapp.rentalapi.mapper.UserMapper;
+import com.rentalapp.rentalapi.model.User;
 import com.rentalapp.rentalapi.service.AuthService;
+import com.rentalapp.rentalapi.service.UserService;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -27,9 +30,13 @@ import jakarta.validation.Valid;
 public class AuthController {
 
     private final AuthService authService;
+    private final UserMapper userMapper;
+    private final UserService userService;
 
-    AuthController(AuthService authService) {
+    AuthController(AuthService authService, UserMapper userMapper, UserService userService) {
         this.authService = authService;
+        this.userMapper = userMapper;
+        this.userService = userService;
     }
 
     @Operation(description = "Connexion de l'utilisateur")
@@ -39,8 +46,9 @@ public class AuthController {
     @ResponseBody
 
     public ResponseEntity<?> login(@Valid @RequestBody LoginRequest loginRequest) {
+        String token = authService.login(loginRequest.getEmail(), loginRequest.getPassword());
         return ResponseEntity
-                .ok(authService.login(loginRequest.getEmail(), loginRequest.getPassword()));
+                .ok(new TokenResponse(token));
     }
 
     @Operation(description = "Enregistrement de l'utilisateur")
@@ -49,7 +57,10 @@ public class AuthController {
     @PostMapping(value = "/register", consumes = { "application/json" })
     @ResponseBody
     public ResponseEntity<?> register(@Valid @RequestBody RegisterRequest registerRequest) {
-        return ResponseEntity.ok(authService.register(registerRequest));
+        User user = userMapper.requestToEntity(registerRequest);
+        String token = authService.register(user, registerRequest.getPassword());
+        return ResponseEntity
+                .ok(new TokenResponse(token));
 
     }
 
@@ -59,7 +70,8 @@ public class AuthController {
     @GetMapping("/me")
     @ResponseBody
     public ResponseEntity<?> me(Authentication authentication) {
-        return ResponseEntity.ok(authService.getAuthenticatedUserResponse(authentication));
+        User authenticatedUser = userService.getUserByEmail(authentication.getName());
+        return ResponseEntity.ok(userMapper.entityToResponse(authenticatedUser));
     }
 
 }

@@ -1,9 +1,6 @@
 package com.rentalapp.rentalapi.service;
 
 import org.springframework.stereotype.Service;
-
-import com.rentalapp.rentalapi.dto.request.MessageRequest;
-import com.rentalapp.rentalapi.mapper.MessageMapper;
 import com.rentalapp.rentalapi.model.Message;
 import com.rentalapp.rentalapi.repository.MessageRepository;
 
@@ -11,15 +8,12 @@ import com.rentalapp.rentalapi.repository.MessageRepository;
 public class MessageService {
 
     private final MessageRepository messageRepository;
-    private final MessageMapper messageMapper;
 
-    public MessageService(MessageRepository messageRepository, MessageMapper messageMapper) {
+    public MessageService(MessageRepository messageRepository) {
         this.messageRepository = messageRepository;
-        this.messageMapper = messageMapper;
     }
 
-    public Message createMessage(MessageRequest messageRequest) {
-        Message message = messageMapper.requestToEntity(messageRequest);
+    public Message saveMessage(Message message) {
         messageRepository.save(message);
         return message;
     }
