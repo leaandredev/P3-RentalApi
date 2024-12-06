@@ -1,4 +1,4 @@
-package com.rentalapp.rentalapi.dto;
+package com.rentalapp.rentalapi.dto.request;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;

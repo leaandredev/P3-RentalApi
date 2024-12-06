@@ -4,8 +4,6 @@ import java.time.LocalDateTime;
 
 import org.hibernate.annotations.DynamicUpdate;
 
-import com.rentalapp.rentalapi.dto.RentalRequest;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -15,11 +13,15 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @Entity
 @DynamicUpdate
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "rentals")
 public class Rental {
     @Id
@@ -46,18 +48,6 @@ public class Rental {
 
     @Column(name = "updated_at", nullable = false)
     private LocalDateTime updatedAt;
-
-    public Rental() {
-    }
-
-    public Rental(User owner, RentalRequest rentalRequest, String filePath) {
-        this.name = rentalRequest.getName();
-        this.surface = Integer.valueOf(rentalRequest.getSurface());
-        this.price = Integer.valueOf(rentalRequest.getPrice());
-        this.picture = filePath;
-        this.description = rentalRequest.getDescription();
-        this.owner = owner;
-    }
 
     @PrePersist
     protected void onCreate() {

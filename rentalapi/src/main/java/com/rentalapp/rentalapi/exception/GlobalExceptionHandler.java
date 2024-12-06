@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-import com.rentalapp.rentalapi.dto.ErrorResponse;
+import com.rentalapp.rentalapi.dto.response.ErrorResponse;
 
 import lombok.extern.slf4j.Slf4j;
 

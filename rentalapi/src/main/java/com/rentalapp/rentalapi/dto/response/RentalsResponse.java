@@ -1,4 +1,4 @@
-package com.rentalapp.rentalapi.dto;
+package com.rentalapp.rentalapi.dto.response;
 
 import java.util.List;
 

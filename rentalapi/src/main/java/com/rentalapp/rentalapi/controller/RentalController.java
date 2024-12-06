@@ -7,11 +7,11 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.rentalapp.rentalapi.dto.ErrorResponse;
-import com.rentalapp.rentalapi.dto.OkResponse;
-import com.rentalapp.rentalapi.dto.RentalRequest;
-import com.rentalapp.rentalapi.dto.RentalResponse;
-import com.rentalapp.rentalapi.dto.RentalsResponse;
+import com.rentalapp.rentalapi.dto.request.RentalRequest;
+import com.rentalapp.rentalapi.dto.response.ErrorResponse;
+import com.rentalapp.rentalapi.dto.response.OkResponse;
+import com.rentalapp.rentalapi.dto.response.RentalResponse;
+import com.rentalapp.rentalapi.dto.response.RentalsResponse;
 import com.rentalapp.rentalapi.model.User;
 import com.rentalapp.rentalapi.service.AuthService;
 import com.rentalapp.rentalapi.service.RentalService;
@@ -46,7 +46,7 @@ public class RentalController {
     @ApiResponse(responseCode = "401", description = "Échec de l'authentification", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class)))
     @GetMapping
     public ResponseEntity<?> getAllRentals(Authentication authentication) {
-        return ResponseEntity.ok(Map.of("rentals", rentalService.getAlls()));
+        return ResponseEntity.ok(Map.of("rentals", rentalService.getAllRentals()));
     }
 
     @Operation(description = "Détail d'une location")

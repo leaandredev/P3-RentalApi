@@ -9,11 +9,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.rentalapp.rentalapi.dto.ErrorResponse;
-import com.rentalapp.rentalapi.dto.LoginRequest;
-import com.rentalapp.rentalapi.dto.RegisterRequest;
-import com.rentalapp.rentalapi.dto.TokenResponse;
-import com.rentalapp.rentalapi.dto.UserResponse;
+import com.rentalapp.rentalapi.dto.request.LoginRequest;
+import com.rentalapp.rentalapi.dto.request.RegisterRequest;
+import com.rentalapp.rentalapi.dto.response.ErrorResponse;
+import com.rentalapp.rentalapi.dto.response.TokenResponse;
+import com.rentalapp.rentalapi.dto.response.UserResponse;
 import com.rentalapp.rentalapi.service.AuthService;
 
 import io.swagger.v3.oas.annotations.Operation;
