@@ -1,6 +1,6 @@
 package com.rentalapp.rentalapi.configuration;
 
-import javax.crypto.spec.SecretKeySpec;
+import javax.crypto.SecretKey;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -20,10 +20,13 @@ import org.springframework.security.web.SecurityFilterChain;
 import com.nimbusds.jose.jwk.source.ImmutableSecret;
 import com.rentalapp.rentalapi.service.CustomUserDetailsService;
 
+import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.security.Keys;
+
 @Configuration
 public class SpringSecurityConfig {
 
-    private final String jwtKey = "mySuperSecretKey12345678901234zdfjhzbefhzefbzjehcjzebcjkznvgzrfgzrfb";
+    private final SecretKey jwtKey = Keys.secretKeyFor(SignatureAlgorithm.HS512);
 
     @Autowired
     private CustomUserDetailsService customUserDetailsService;
@@ -61,15 +64,12 @@ public class SpringSecurityConfig {
 
     @Bean
     public JwtEncoder jwtEncoder() {
-        if (this.jwtKey.length() < 32) {
-            throw new IllegalArgumentException("The secret key must be at least 32 characters long!");
-        }
-        return new NimbusJwtEncoder(new ImmutableSecret<>(this.jwtKey.getBytes()));
+        return new NimbusJwtEncoder(new ImmutableSecret<>(jwtKey.getEncoded()));
     }
 
     @Bean
     public JwtDecoder jwtDecoder() {
-        return NimbusJwtDecoder.withSecretKey(new SecretKeySpec(this.jwtKey.getBytes(), "HmacSHA256")).build();
+        return NimbusJwtDecoder.withSecretKey(jwtKey).build();
     }
 
 }
