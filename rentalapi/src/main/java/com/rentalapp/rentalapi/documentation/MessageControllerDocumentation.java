@@ -11,9 +11,16 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
-@Tag(name = "Messages", description = "Operations related to messages")
+/** MessageController Annotations for OpenAPI documentation */
+@Tag(name = "Messages", description = "Endpoints related to messages between user and rental owners")
 public interface MessageControllerDocumentation {
 
+    /**
+     * Send a message to a rental owner
+     * 
+     * @param messageRequest A requestBody with message details for owner rental
+     * @return a success message if message successfully saved
+     */
     @Operation(summary = "Send Message", description = "Send a message to a rental owner")
     @ApiResponse(responseCode = "200", description = "Message send successfully", content = @Content(mediaType = "application/json", schema = @Schema(implementation = OkResponse.class)))
     public abstract ResponseEntity<OkResponse> sendMessage(MessageRequest messageRequest);

@@ -20,6 +20,7 @@ import com.rentalapp.rentalapi.service.AuthService;
 import com.rentalapp.rentalapi.service.UserService;
 import jakarta.validation.Valid;
 
+/** Endpoints for authentication */
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController implements AuthControllerDocumentation {

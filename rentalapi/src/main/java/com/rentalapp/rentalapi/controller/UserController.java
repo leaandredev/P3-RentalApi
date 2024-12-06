@@ -13,6 +13,7 @@ import com.rentalapp.rentalapi.mapper.UserMapper;
 import com.rentalapp.rentalapi.model.User;
 import com.rentalapp.rentalapi.service.UserService;
 
+/** Endpoints related to user informations */
 @RestController
 @RequestMapping("/api/user")
 public class UserController implements UserControllerDocumentation {

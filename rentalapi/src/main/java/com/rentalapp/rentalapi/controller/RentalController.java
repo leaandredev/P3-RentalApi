@@ -24,6 +24,7 @@ import com.rentalapp.rentalapi.model.User;
 import com.rentalapp.rentalapi.service.RentalService;
 import com.rentalapp.rentalapi.service.UserService;
 
+/** Endpoints to handle rentals */
 @RestController
 @RequestMapping("/api/rentals")
 public class RentalController implements RentalControllerDocumentation {
@@ -73,7 +74,7 @@ public class RentalController implements RentalControllerDocumentation {
     @Override
     @PutMapping("/{id}")
     @ResponseBody
-    public ResponseEntity<?> updateRental(@PathVariable String id, @ModelAttribute RentalRequest rentalRequest) {
+    public ResponseEntity<OkResponse> updateRental(@PathVariable String id, @ModelAttribute RentalRequest rentalRequest) {
 
         rentalService.updateRental(Integer.valueOf(id), rentalRequest);
         return ResponseEntity.ok(new OkResponse("Rental updated !"));
