@@ -16,6 +16,7 @@ import com.rentalapp.rentalapi.service.MessageService;
 
 import jakarta.validation.Valid;
 
+/** Endpoints related to messages between user and rental owners */
 @RestController
 @RequestMapping("/api/messages")
 public class MessageController implements MessageControllerDocumentation {
