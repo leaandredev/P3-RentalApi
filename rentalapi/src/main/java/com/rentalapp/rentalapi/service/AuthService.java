@@ -34,6 +34,6 @@ public class AuthService {
 
     public String register(User newUser, String plainPassword) {
         User user = userService.saveUser(newUser);
-        return this.login(user.getEmail(), plainPassword);
+        return login(user.getEmail(), plainPassword);
     }
 }

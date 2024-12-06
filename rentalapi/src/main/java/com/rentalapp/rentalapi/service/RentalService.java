@@ -30,20 +30,17 @@ public class RentalService {
 
     public Rental getRentalById(Integer rentalId) {
         return rentalRepository.findById(rentalId)
-                .orElseThrow(() -> new NoEntryFoundException("La location avec l'id " + rentalId + " n'existe pas."));
+                .orElseThrow(() -> new NoEntryFoundException("La location demandé n'existe pas."));
     }
 
     public Rental saveRental(Rental rental) {
-        rentalRepository.save(rental);
-        return rental;
+        return rentalRepository.save(rental);
     }
 
     public Rental updateRental(Integer rentalId, RentalRequest rentalRequest) {
-        Rental rental = rentalRepository.findById(rentalId)
-                .orElseThrow(() -> new NoEntryFoundException("La location avec l'id " + rentalId + " n'existe pas."));
+        Rental rental = getRentalById(rentalId);
         rentalMapper.updateEntityFromRequest(rental, rentalRequest);
-        rentalRepository.save(rental);
-        return rental;
+        return saveRental(rental);
     }
 
 }
