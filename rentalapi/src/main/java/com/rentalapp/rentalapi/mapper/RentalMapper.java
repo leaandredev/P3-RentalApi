@@ -32,6 +32,14 @@ public class RentalMapper {
                 null);
     }
 
+    public Rental updateEntityFromRequest(Rental rental, RentalRequest rentalRequest) {
+        rental.setName(rentalRequest.getName());
+        rental.setPrice(Integer.valueOf(rentalRequest.getPrice()));
+        rental.setSurface(Integer.valueOf(rentalRequest.getSurface()));
+        rental.setDescription(rentalRequest.getDescription());
+        return rental;
+    }
+
     public RentalResponse entityToResponse(Rental rental) {
         return new RentalResponse(
                 rental.getId(),

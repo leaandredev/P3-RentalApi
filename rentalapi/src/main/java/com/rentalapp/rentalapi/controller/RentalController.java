@@ -1,9 +1,15 @@
 package com.rentalapp.rentalapi.controller;
 
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -12,9 +18,11 @@ import com.rentalapp.rentalapi.dto.response.ErrorResponse;
 import com.rentalapp.rentalapi.dto.response.OkResponse;
 import com.rentalapp.rentalapi.dto.response.RentalResponse;
 import com.rentalapp.rentalapi.dto.response.RentalsResponse;
+import com.rentalapp.rentalapi.mapper.RentalMapper;
+import com.rentalapp.rentalapi.model.Rental;
 import com.rentalapp.rentalapi.model.User;
-import com.rentalapp.rentalapi.service.AuthService;
 import com.rentalapp.rentalapi.service.RentalService;
+import com.rentalapp.rentalapi.service.UserService;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -23,22 +31,19 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-
 @RestController
 @RequestMapping("/api/rentals")
 public class RentalController {
 
     private final RentalService rentalService;
-    private final AuthService authService;
+    private final UserService userService;
 
-    public RentalController(RentalService rentalService, AuthService authService) {
+    private final RentalMapper rentalMapper;
+
+    public RentalController(RentalService rentalService, UserService userService, RentalMapper rentalMapper) {
         this.rentalService = rentalService;
-        this.authService = authService;
+        this.userService = userService;
+        this.rentalMapper = rentalMapper;
     }
 
     @Operation(description = "Liste des locations pour l'utilisateur connecté")
@@ -46,7 +51,12 @@ public class RentalController {
     @ApiResponse(responseCode = "401", description = "Échec de l'authentification", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class)))
     @GetMapping
     public ResponseEntity<?> getAllRentals(Authentication authentication) {
-        return ResponseEntity.ok(Map.of("rentals", rentalService.getAllRentals()));
+        List<Rental> rentals = rentalService.getAllRentals();
+        List<RentalResponse> rentalResponses = rentals.stream()
+                .map(rentalMapper::entityToResponse)
+                .toList();
+
+        return ResponseEntity.ok(Map.of("rentals", rentalResponses));
     }
 
     @Operation(description = "Détail d'une location")
@@ -55,7 +65,8 @@ public class RentalController {
     @GetMapping("/{id}")
     public ResponseEntity<?> getRental(
             @Parameter(description = "ID of the rental to get", required = true) @PathVariable String id) {
-        return ResponseEntity.ok(rentalService.getRentalById(Integer.valueOf(id)));
+        Rental rental = rentalService.getRentalById(Integer.valueOf(id));
+        return ResponseEntity.ok(rentalMapper.entityToResponse(rental));
     }
 
     @Operation(description = "Création d'une location pour l'utilisateur connecté")
@@ -65,8 +76,9 @@ public class RentalController {
     public ResponseEntity<?> createRental(
             @RequestBody(content = @Content(mediaType = "multipart/form-data", schema = @Schema(implementation = RentalRequest.class))) @ModelAttribute RentalRequest rentalRequest,
             Authentication authentication) {
-        User owner = this.authService.getAuthenticatedUser(authentication);
-        rentalService.createRental(owner, rentalRequest);
+        User owner = userService.getUserByEmail(authentication.getName());
+        Rental rental = rentalMapper.requestToEntity(rentalRequest, owner);
+        rentalService.saveRental(rental);
         return ResponseEntity.ok(new OkResponse("Rental created !"));
     }
 
@@ -77,6 +89,7 @@ public class RentalController {
     public ResponseEntity<?> updateRental(
             @Parameter(description = "ID of the rental to update", required = true) @PathVariable String id,
             @RequestBody(content = @Content(mediaType = "multipart/form-data", schema = @Schema(implementation = RentalRequest.class))) @ModelAttribute RentalRequest rentalRequest) {
+
         rentalService.updateRental(Integer.valueOf(id), rentalRequest);
         return ResponseEntity.ok(new OkResponse("Rental updated !"));
     }
