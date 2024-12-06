@@ -9,25 +9,20 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.rentalapp.rentalapi.documentation.AuthControllerDocumentation;
 import com.rentalapp.rentalapi.dto.request.LoginRequest;
 import com.rentalapp.rentalapi.dto.request.RegisterRequest;
-import com.rentalapp.rentalapi.dto.response.ErrorResponse;
 import com.rentalapp.rentalapi.dto.response.TokenResponse;
 import com.rentalapp.rentalapi.dto.response.UserResponse;
 import com.rentalapp.rentalapi.mapper.UserMapper;
 import com.rentalapp.rentalapi.model.User;
 import com.rentalapp.rentalapi.service.AuthService;
 import com.rentalapp.rentalapi.service.UserService;
-
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/auth")
-public class AuthController {
+public class AuthController implements AuthControllerDocumentation {
 
     private final AuthService authService;
     private final UserMapper userMapper;
@@ -39,24 +34,19 @@ public class AuthController {
         this.userService = userService;
     }
 
-    @Operation(description = "Connexion de l'utilisateur")
-    @ApiResponse(responseCode = "200", description = "Authentification réussie", content = @Content(mediaType = "application/json", schema = @Schema(implementation = TokenResponse.class)))
-    @ApiResponse(responseCode = "401", description = "Échec de l'authentification", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class)))
+    @Override
     @PostMapping(value = "/login", consumes = { "application/json" })
     @ResponseBody
-
-    public ResponseEntity<?> login(@Valid @RequestBody LoginRequest loginRequest) {
+    public ResponseEntity<TokenResponse> login(@Valid @RequestBody LoginRequest loginRequest) {
         String token = authService.login(loginRequest.getEmail(), loginRequest.getPassword());
         return ResponseEntity
                 .ok(new TokenResponse(token));
     }
 
-    @Operation(description = "Enregistrement de l'utilisateur")
-    @ApiResponse(responseCode = "200", description = "Enregistrement et authentification réussie", content = @Content(mediaType = "application/json", schema = @Schema(implementation = TokenResponse.class)))
-    @ApiResponse(responseCode = "400", description = "Échec de l'enregistrement")
+    @Override
     @PostMapping(value = "/register", consumes = { "application/json" })
     @ResponseBody
-    public ResponseEntity<?> register(@Valid @RequestBody RegisterRequest registerRequest) {
+    public ResponseEntity<TokenResponse> register(@Valid @RequestBody RegisterRequest registerRequest) {
         User user = userMapper.requestToEntity(registerRequest);
         String token = authService.register(user, registerRequest.getPassword());
         return ResponseEntity
@@ -64,14 +54,13 @@ public class AuthController {
 
     }
 
-    @Operation(description = "Récupération des informations de l'utilisateur authentifié")
-    @ApiResponse(responseCode = "200", description = "Récupération réussie", content = @Content(schema = @Schema(implementation = UserResponse.class)))
-    @ApiResponse(responseCode = "401", description = "Connexion non autorisé")
+    @Override
     @GetMapping("/me")
     @ResponseBody
-    public ResponseEntity<?> me(Authentication authentication) {
+    public ResponseEntity<UserResponse> me(Authentication authentication) {
         User authenticatedUser = userService.getUserByEmail(authentication.getName());
-        return ResponseEntity.ok(userMapper.entityToResponse(authenticatedUser));
+        UserResponse userResponse = userMapper.entityToResponse(authenticatedUser);
+        return ResponseEntity.ok(userResponse);
     }
 
 }

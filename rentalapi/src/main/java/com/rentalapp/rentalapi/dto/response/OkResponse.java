@@ -1,19 +1,13 @@
 package com.rentalapp.rentalapi.dto.response;
 
-import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
+@AllArgsConstructor
+@NoArgsConstructor
 @Data
 public class OkResponse {
-    @Schema(example = "Rental created !")
     private String message;
-
-    public OkResponse() {
-        this.message = null;
-    }
-
-    public OkResponse(String message) {
-        this.message = message;
-    }
 
 }
