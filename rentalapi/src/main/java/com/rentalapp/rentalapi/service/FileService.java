@@ -9,12 +9,20 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+/* Service to handle file treatment for rental actions */
 @Service
 public class FileService {
 
-    @Value("${app.base-url}") // Défaut si non défini
+    @Value("${app.base-url}")
     private String baseUrl;
 
+    /**
+     * Save the file in local directory and return an accessible URL for the front
+     * app
+     * 
+     * @param file Picture provided to represent the rental
+     * @return The absolut file URL of the picture
+     */
     public String saveFile(MultipartFile file) {
         if (file == null || file.isEmpty()) {
             throw new IllegalArgumentException("File is empty or null");
