@@ -1,4 +1,4 @@
-package com.rentalapp.rentalapi.dto;
+package com.rentalapp.rentalapi.dto.request;
 
 import org.springframework.web.multipart.MultipartFile;
 

@@ -2,9 +2,9 @@ package com.rentalapp.rentalapi.controller;
 
 import org.springframework.web.bind.annotation.RestController;
 
-import com.rentalapp.rentalapi.dto.ErrorResponse;
-import com.rentalapp.rentalapi.dto.MessageRequest;
-import com.rentalapp.rentalapi.dto.OkResponse;
+import com.rentalapp.rentalapi.dto.request.MessageRequest;
+import com.rentalapp.rentalapi.dto.response.ErrorResponse;
+import com.rentalapp.rentalapi.dto.response.OkResponse;
 import com.rentalapp.rentalapi.service.MessageService;
 
 import io.swagger.v3.oas.annotations.Operation;

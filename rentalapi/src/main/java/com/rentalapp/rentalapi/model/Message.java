@@ -11,10 +11,14 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @Entity
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "messages")
 public class Message {
     @Id
@@ -37,19 +41,9 @@ public class Message {
     @Column(name = "updated_at", nullable = false)
     private LocalDateTime updatedAt;
 
-    public Message() {
-    }
-
-    public Message(String message, Rental rental, User user) {
-        this.message = message;
-        this.rental = rental;
-        this.user = user;
-    }
-
     @PrePersist
     protected void onCreate() {
         this.createdAt = LocalDateTime.now();
         this.updatedAt = this.createdAt;
     }
-
 }

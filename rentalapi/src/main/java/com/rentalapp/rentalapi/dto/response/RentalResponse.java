@@ -1,14 +1,14 @@
-package com.rentalapp.rentalapi.dto;
-
-import java.time.format.DateTimeFormatter;
-
-import com.rentalapp.rentalapi.model.Rental;
+package com.rentalapp.rentalapi.dto.response;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.Column;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.NonNull;
 
+@AllArgsConstructor
+@NoArgsConstructor
 @Data
 public class RentalResponse {
     @NonNull
@@ -43,17 +43,5 @@ public class RentalResponse {
     @NonNull
     @Schema(example = "2024/12/02")
     private String updated_at;
-
-    public RentalResponse(Rental rental) {
-        this.id = rental.getId();
-        this.name = rental.getName();
-        this.surface = rental.getSurface();
-        this.price = rental.getPrice();
-        this.picture = rental.getPicture();
-        this.description = rental.getDescription();
-        this.owner_id = rental.getOwner().getId();
-        this.created_at = rental.getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy/MM/dd"));
-        this.updated_at = rental.getUpdatedAt().format(DateTimeFormatter.ofPattern("yyyy/MM/dd"));
-    }
 
 }
