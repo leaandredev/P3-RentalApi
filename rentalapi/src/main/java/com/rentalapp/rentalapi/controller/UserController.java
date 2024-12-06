@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.rentalapp.rentalapi.dto.response.ErrorResponse;
 import com.rentalapp.rentalapi.dto.response.UserResponse;
 import com.rentalapp.rentalapi.mapper.UserMapper;
 import com.rentalapp.rentalapi.model.User;
@@ -16,8 +17,10 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 @RestController
+@Tag(name = "Users", description = "Operations related to users")
 @RequestMapping("/api/user")
 public class UserController {
 
@@ -29,9 +32,9 @@ public class UserController {
         this.userMapper = userMapper;
     }
 
-    @Operation(description = "Récupération des informations de propriétaire")
-    @ApiResponse(responseCode = "200", description = "Propriétaire récupéré", content = @Content(schema = @Schema(implementation = UserResponse.class)))
-    @ApiResponse(responseCode = "401", description = "Connexion non autorisé")
+    @Operation(summary = "Get User", description = "Get user details")
+    @ApiResponse(responseCode = "200", description = "User successfully retrieved", content = @Content(schema = @Schema(implementation = UserResponse.class)))
+    @ApiResponse(responseCode = "401", description = "Invalid credentials, access denied", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class)))
     @GetMapping("/{id}")
     @ResponseBody
     public ResponseEntity<UserResponse> getUser(@PathVariable String id) {

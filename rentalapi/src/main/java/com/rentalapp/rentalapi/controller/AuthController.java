@@ -23,9 +23,11 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 
 @RestController
+@Tag(name = "Auth", description = "Operations related to authentication")
 @RequestMapping("/api/auth")
 public class AuthController {
 
@@ -39,24 +41,24 @@ public class AuthController {
         this.userService = userService;
     }
 
-    @Operation(description = "Connexion de l'utilisateur")
-    @ApiResponse(responseCode = "200", description = "Authentification réussie", content = @Content(mediaType = "application/json", schema = @Schema(implementation = TokenResponse.class)))
-    @ApiResponse(responseCode = "401", description = "Échec de l'authentification", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class)))
+    @Operation(summary = "Login", description = "Log a user")
+    @ApiResponse(responseCode = "200", description = "Authenticated successfully", content = @Content(mediaType = "application/json", schema = @Schema(implementation = TokenResponse.class)))
+    @ApiResponse(responseCode = "401", description = "Invalid credentials, access denied", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class)))
     @PostMapping(value = "/login", consumes = { "application/json" })
     @ResponseBody
 
-    public ResponseEntity<?> login(@Valid @RequestBody LoginRequest loginRequest) {
+    public ResponseEntity<TokenResponse> login(@Valid @RequestBody LoginRequest loginRequest) {
         String token = authService.login(loginRequest.getEmail(), loginRequest.getPassword());
         return ResponseEntity
                 .ok(new TokenResponse(token));
     }
 
-    @Operation(description = "Enregistrement de l'utilisateur")
-    @ApiResponse(responseCode = "200", description = "Enregistrement et authentification réussie", content = @Content(mediaType = "application/json", schema = @Schema(implementation = TokenResponse.class)))
-    @ApiResponse(responseCode = "400", description = "Échec de l'enregistrement")
+    @Operation(summary = "Register", description = "Register a new user")
+    @ApiResponse(responseCode = "200", description = "Registerd successfully", content = @Content(mediaType = "application/json", schema = @Schema(implementation = TokenResponse.class)))
+    @ApiResponse(responseCode = "400", description = "Invalid request for new user register")
     @PostMapping(value = "/register", consumes = { "application/json" })
     @ResponseBody
-    public ResponseEntity<?> register(@Valid @RequestBody RegisterRequest registerRequest) {
+    public ResponseEntity<TokenResponse> register(@Valid @RequestBody RegisterRequest registerRequest) {
         User user = userMapper.requestToEntity(registerRequest);
         String token = authService.register(user, registerRequest.getPassword());
         return ResponseEntity
@@ -64,14 +66,15 @@ public class AuthController {
 
     }
 
-    @Operation(description = "Récupération des informations de l'utilisateur authentifié")
-    @ApiResponse(responseCode = "200", description = "Récupération réussie", content = @Content(schema = @Schema(implementation = UserResponse.class)))
-    @ApiResponse(responseCode = "401", description = "Connexion non autorisé")
+    @Operation(summary = "Me", description = "Get authenticated user informations")
+    @ApiResponse(responseCode = "200", description = "User data retrieved successfully", content = @Content(schema = @Schema(implementation = UserResponse.class)))
+    @ApiResponse(responseCode = "401", description = "Invalid credentials, access denied", content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     @GetMapping("/me")
     @ResponseBody
-    public ResponseEntity<?> me(Authentication authentication) {
+    public ResponseEntity<UserResponse> me(Authentication authentication) {
         User authenticatedUser = userService.getUserByEmail(authentication.getName());
-        return ResponseEntity.ok(userMapper.entityToResponse(authenticatedUser));
+        UserResponse userResponse = userMapper.entityToResponse(authenticatedUser);
+        return ResponseEntity.ok(userResponse);
     }
 
 }

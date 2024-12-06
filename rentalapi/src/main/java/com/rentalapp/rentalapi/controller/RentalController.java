@@ -1,7 +1,6 @@
 package com.rentalapp.rentalapi.controller;
 
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -30,14 +29,15 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 @RestController
+@Tag(name = "Rentals", description = "Operations related to rentals")
 @RequestMapping("/api/rentals")
 public class RentalController {
 
     private final RentalService rentalService;
     private final UserService userService;
-
     private final RentalMapper rentalMapper;
 
     public RentalController(RentalService rentalService, UserService userService, RentalMapper rentalMapper) {
@@ -46,22 +46,22 @@ public class RentalController {
         this.rentalMapper = rentalMapper;
     }
 
-    @Operation(description = "Liste des locations pour l'utilisateur connecté")
-    @ApiResponse(responseCode = "200", description = "Liste récupérée", content = @Content(mediaType = "application/json", schema = @Schema(implementation = RentalsResponse.class)))
-    @ApiResponse(responseCode = "401", description = "Échec de l'authentification", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class)))
+    @Operation(summary = "Get all rentals", description = "Retrieve all rentals")
+    @ApiResponse(responseCode = "200", description = "Rentals retrieved successfully", content = @Content(mediaType = "application/json", schema = @Schema(implementation = RentalsResponse.class)))
+    @ApiResponse(responseCode = "401", description = "Invalid credentials, access denied", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class)))
     @GetMapping
-    public ResponseEntity<?> getAllRentals(Authentication authentication) {
+    public ResponseEntity<RentalsResponse> getAllRentals(Authentication authentication) {
         List<Rental> rentals = rentalService.getAllRentals();
         List<RentalResponse> rentalResponses = rentals.stream()
                 .map(rentalMapper::entityToResponse)
                 .toList();
 
-        return ResponseEntity.ok(Map.of("rentals", rentalResponses));
+        return ResponseEntity.ok(new RentalsResponse(rentalResponses));
     }
 
-    @Operation(description = "Détail d'une location")
-    @ApiResponse(responseCode = "200", description = "Détail de la location", content = @Content(mediaType = "application/json", schema = @Schema(implementation = RentalResponse.class)))
-    @ApiResponse(responseCode = "401", description = "Échec de l'authentification", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class)))
+    @Operation(summary = "Get Rental", description = "Get rental details")
+    @ApiResponse(responseCode = "200", description = "Rental retrieved successfully", content = @Content(mediaType = "application/json", schema = @Schema(implementation = RentalResponse.class)))
+    @ApiResponse(responseCode = "401", description = "Invalid credentials, access denied", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class)))
     @GetMapping("/{id}")
     public ResponseEntity<?> getRental(
             @Parameter(description = "ID of the rental to get", required = true) @PathVariable String id) {
@@ -69,9 +69,9 @@ public class RentalController {
         return ResponseEntity.ok(rentalMapper.entityToResponse(rental));
     }
 
-    @Operation(description = "Création d'une location pour l'utilisateur connecté")
-    @ApiResponse(responseCode = "200", description = "Location crée", content = @Content(mediaType = "application/json", schema = @Schema(implementation = OkResponse.class)))
-    @ApiResponse(responseCode = "401", description = "Échec de l'authentification", content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
+    @Operation(summary = "Create Rental", description = "Create a new rental for authenticated user")
+    @ApiResponse(responseCode = "200", description = "Rental successfully created", content = @Content(mediaType = "application/json", schema = @Schema(implementation = OkResponse.class)))
+    @ApiResponse(responseCode = "401", description = "Invalid credentials, access denied", content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     @PostMapping
     public ResponseEntity<?> createRental(
             @RequestBody(content = @Content(mediaType = "multipart/form-data", schema = @Schema(implementation = RentalRequest.class))) @ModelAttribute RentalRequest rentalRequest,
@@ -82,9 +82,9 @@ public class RentalController {
         return ResponseEntity.ok(new OkResponse("Rental created !"));
     }
 
-    @Operation(description = "Liste des locations pour l'utilisateur connecté")
-    @ApiResponse(responseCode = "200", description = "Location modifiée", content = @Content(schema = @Schema(implementation = OkResponse.class)))
-    @ApiResponse(responseCode = "401", description = "Échec de l'authentification", content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
+    @Operation(summary = "Update Rental", description = "Update a rental")
+    @ApiResponse(responseCode = "200", description = "Rental successfully updated", content = @Content(schema = @Schema(implementation = OkResponse.class)))
+    @ApiResponse(responseCode = "401", description = "nvalid credentials, access denied", content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     @PutMapping("/{id}")
     public ResponseEntity<?> updateRental(
             @Parameter(description = "ID of the rental to update", required = true) @PathVariable String id,
