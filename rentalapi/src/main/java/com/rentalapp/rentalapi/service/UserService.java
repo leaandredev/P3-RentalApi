@@ -22,7 +22,7 @@ public class UserService {
 
     public User getUserById(Integer userId) {
         return userRepository.findById(userId)
-                .orElseThrow(() -> new NoEntryFoundException("L'utilisateur avec l'id " + userId + " n'existe pas."));
+                .orElseThrow(() -> new NoEntryFoundException("L'utilisateur demandé n'existe pas."));
     }
 
     public User getUserByEmail(String email) {
@@ -32,11 +32,11 @@ public class UserService {
     public User saveUser(User user) {
         try {
             userRepository.save(user);
-
             log.info("user saved");
+
             return user;
         } catch (DataIntegrityViolationException e) {
-            throw new DuplicateEntryException("L'utilisateur " + user.getEmail() + " existe déjà");
+            throw new DuplicateEntryException("Cet utilisateur existe déjà");
         }
     }
 }
