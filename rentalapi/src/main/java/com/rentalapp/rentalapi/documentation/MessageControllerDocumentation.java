@@ -3,7 +3,7 @@ package com.rentalapp.rentalapi.documentation;
 import org.springframework.http.ResponseEntity;
 
 import com.rentalapp.rentalapi.dto.request.MessageRequest;
-import com.rentalapp.rentalapi.dto.response.OkResponse;
+import com.rentalapp.rentalapi.dto.response.SuccessResponse;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -22,7 +22,7 @@ public interface MessageControllerDocumentation {
      * @return a success message if message successfully saved
      */
     @Operation(summary = "Send Message", description = "Send a message to a rental owner")
-    @ApiResponse(responseCode = "200", description = "Message send successfully", content = @Content(mediaType = "application/json", schema = @Schema(implementation = OkResponse.class)))
-    public abstract ResponseEntity<OkResponse> sendMessage(MessageRequest messageRequest);
+    @ApiResponse(responseCode = "200", description = "Message send successfully", content = @Content(mediaType = "application/json", schema = @Schema(implementation = SuccessResponse.class)))
+    public abstract ResponseEntity<SuccessResponse> sendMessage(MessageRequest messageRequest);
 
 }

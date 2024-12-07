@@ -4,7 +4,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 
 import com.rentalapp.rentalapi.dto.request.RentalRequest;
-import com.rentalapp.rentalapi.dto.response.OkResponse;
+import com.rentalapp.rentalapi.dto.response.SuccessResponse;
 import com.rentalapp.rentalapi.dto.response.RentalResponse;
 import com.rentalapp.rentalapi.dto.response.RentalsResponse;
 
@@ -49,8 +49,8 @@ public interface RentalControllerDocumentation {
          * @return a success message if rental successfully created
          */
         @Operation(summary = "Create Rental", description = "Create a new rental for authenticated user")
-        @ApiResponse(responseCode = "200", description = "Rental successfully created", content = @Content(mediaType = "application/json", schema = @Schema(implementation = OkResponse.class)))
-        public abstract ResponseEntity<OkResponse> createRental(
+        @ApiResponse(responseCode = "200", description = "Rental successfully created", content = @Content(mediaType = "application/json", schema = @Schema(implementation = SuccessResponse.class)))
+        public abstract ResponseEntity<SuccessResponse> createRental(
                         @RequestBody(content = @Content(mediaType = "multipart/form-data", schema = @Schema(implementation = RentalRequest.class))) RentalRequest rentalRequest,
                         Authentication authentication);
 
@@ -62,8 +62,8 @@ public interface RentalControllerDocumentation {
          * @return a success message if rental successfully updated
          */
         @Operation(summary = "Update Rental", description = "Update a rental")
-        @ApiResponse(responseCode = "200", description = "Rental successfully updated", content = @Content(schema = @Schema(implementation = OkResponse.class)))
-        public ResponseEntity<OkResponse> updateRental(
+        @ApiResponse(responseCode = "200", description = "Rental successfully updated", content = @Content(schema = @Schema(implementation = SuccessResponse.class)))
+        public ResponseEntity<SuccessResponse> updateRental(
                         @Parameter(description = "Rental ID", required = true) String id,
                         @RequestBody(content = @Content(mediaType = "multipart/form-data", schema = @Schema(implementation = RentalRequest.class))) RentalRequest rentalRequest);
 }

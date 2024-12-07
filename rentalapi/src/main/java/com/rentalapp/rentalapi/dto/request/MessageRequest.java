@@ -5,20 +5,35 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
+/**
+ * Data Transfer Object (DTO) for handling message creation requests.
+ * Includes the message content, the user ID, and the rental ID.
+ */
 @Data
 public class MessageRequest {
 
+    /**
+     * The content of the message sent by the user.
+     * This field is mandatory and cannot be null or blank.
+     */
     @Schema(example = "Mon message")
-    @NotBlank(message = "le champ message est obligatoire")
-    @NotNull(message = "le champ message ne peut pas être null")
+    @NotBlank(message = "The message field is required.")
+    @NotNull(message = "The message field cannot be null.")
     private String message;
 
+    /**
+     * The ID of the rental owner
+     * This field is mandatory and cannot be null.
+     */
     @Schema(example = "2")
-    @NotNull(message = "le champ user_id ne peut pas être null")
+    @NotNull(message = "The user_id field cannot be null.")
     private Integer user_id;
 
+    /**
+     * The ID of the rental associated with the message.
+     * This field is mandatory and cannot be null.
+     */
     @Schema(example = "5")
-    @NotNull(message = "le champ rental_id ne peut pas être null")
+    @NotNull(message = "The rental_id field cannot be null.")
     private Integer rental_id;
-
 }
