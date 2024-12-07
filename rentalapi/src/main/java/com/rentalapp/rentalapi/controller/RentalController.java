@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.rentalapp.rentalapi.documentation.RentalControllerDocumentation;
 import com.rentalapp.rentalapi.dto.request.RentalRequest;
-import com.rentalapp.rentalapi.dto.response.OkResponse;
+import com.rentalapp.rentalapi.dto.response.SuccessResponse;
 import com.rentalapp.rentalapi.dto.response.RentalResponse;
 import com.rentalapp.rentalapi.dto.response.RentalsResponse;
 import com.rentalapp.rentalapi.mapper.RentalMapper;
@@ -63,21 +63,22 @@ public class RentalController implements RentalControllerDocumentation {
     @Override
     @PostMapping
     @ResponseBody
-    public ResponseEntity<OkResponse> createRental(@ModelAttribute RentalRequest rentalRequest,
+    public ResponseEntity<SuccessResponse> createRental(@ModelAttribute RentalRequest rentalRequest,
             Authentication authentication) {
         User owner = userService.getUserByEmail(authentication.getName());
         Rental rental = rentalMapper.requestToEntity(rentalRequest, owner);
         rentalService.saveRental(rental);
-        return ResponseEntity.ok(new OkResponse("Rental created !"));
+        return ResponseEntity.ok(new SuccessResponse("Rental created !"));
     }
 
     @Override
     @PutMapping("/{id}")
     @ResponseBody
-    public ResponseEntity<OkResponse> updateRental(@PathVariable String id, @ModelAttribute RentalRequest rentalRequest) {
+    public ResponseEntity<SuccessResponse> updateRental(@PathVariable String id,
+            @ModelAttribute RentalRequest rentalRequest) {
 
         rentalService.updateRental(Integer.valueOf(id), rentalRequest);
-        return ResponseEntity.ok(new OkResponse("Rental updated !"));
+        return ResponseEntity.ok(new SuccessResponse("Rental updated !"));
     }
 
 }

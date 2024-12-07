@@ -7,11 +7,15 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * Data Transfer Object (DTO) representing a list of rental entities.
+ */
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
 public class RentalsResponse {
 
-    @Schema(description = "Liste des locations")
+    /** List of rentals found */
+    @Schema(description = "Rentals list")
     private List<RentalResponse> rentals;
 }

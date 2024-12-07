@@ -38,12 +38,14 @@ public class Rental {
     @Column(precision = 10, scale = 0)
     private Integer surface;
 
-    /** Rental price / night */
+    /** Rental price per night */
     @Column(precision = 10, scale = 0)
     private Integer price;
 
     /** Absolut URL to the property picture */
     private String picture;
+
+    /** Rental property description */
     private String description;
 
     /** Owner of the rental */

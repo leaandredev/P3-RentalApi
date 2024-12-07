@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.rentalapp.rentalapi.documentation.MessageControllerDocumentation;
 import com.rentalapp.rentalapi.dto.request.MessageRequest;
-import com.rentalapp.rentalapi.dto.response.OkResponse;
+import com.rentalapp.rentalapi.dto.response.SuccessResponse;
 import com.rentalapp.rentalapi.mapper.MessageMapper;
 import com.rentalapp.rentalapi.model.Message;
 import com.rentalapp.rentalapi.service.MessageService;
@@ -32,10 +32,10 @@ public class MessageController implements MessageControllerDocumentation {
     @Override
     @PostMapping
     @ResponseBody
-    public ResponseEntity<OkResponse> sendMessage(@Valid @RequestBody MessageRequest messageRequest) {
+    public ResponseEntity<SuccessResponse> sendMessage(@Valid @RequestBody MessageRequest messageRequest) {
         Message message = messageMapper.requestToEntity(messageRequest);
         messageService.saveMessage(message);
-        return ResponseEntity.ok(new OkResponse("Message send with success"));
+        return ResponseEntity.ok(new SuccessResponse("Message send with success"));
     }
 
 }
