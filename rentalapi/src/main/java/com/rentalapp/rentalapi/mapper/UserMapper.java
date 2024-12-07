@@ -9,6 +9,9 @@ import com.rentalapp.rentalapi.dto.request.RegisterRequest;
 import com.rentalapp.rentalapi.dto.response.UserResponse;
 import com.rentalapp.rentalapi.model.User;
 
+/**
+ * Mapper component for converting between User entities, DTOs, and requests.
+ */
 @Component
 public class UserMapper {
 
@@ -18,6 +21,12 @@ public class UserMapper {
         this.passwordEncoder = passwordEncoder;
     }
 
+    /**
+     * Maps a {@link RegisterRequest} to a {@link User} entity
+     * 
+     * @param request the register request containing the input data.
+     * @return a new {@link User} entity populated with the register request datas
+     */
     public User requestToEntity(RegisterRequest request) {
         return new User(
                 null,
@@ -28,6 +37,12 @@ public class UserMapper {
                 null);
     }
 
+    /**
+     * Maps a {@link User} entity to a {@link UserResponse}
+     * 
+     * @param user the user entity to convert
+     * @return a new {@link UserResponse} containing the user's data
+     */
     public UserResponse entityToResponse(User user) {
         return new UserResponse(
                 user.getId(),
