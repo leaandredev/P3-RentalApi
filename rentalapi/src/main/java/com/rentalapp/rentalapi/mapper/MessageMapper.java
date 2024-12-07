@@ -7,6 +7,9 @@ import com.rentalapp.rentalapi.model.Message;
 import com.rentalapp.rentalapi.repository.RentalRepository;
 import com.rentalapp.rentalapi.repository.UserRepository;
 
+/**
+ * Mapper component for converting between Message entities and requests.
+ */
 @Component
 public class MessageMapper {
 
@@ -18,6 +21,12 @@ public class MessageMapper {
         this.userRepository = userRepository;
     }
 
+    /**
+     * Maps a {@link MessageRequest} to a {@link Message} entity
+     * 
+     * @param request the message request containing the input data
+     * @return a new {@link Message} entity populated with the data from the request
+     */
     public Message requestToEntity(MessageRequest request) {
         return new Message(
                 null,
