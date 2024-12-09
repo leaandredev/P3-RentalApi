@@ -10,7 +10,7 @@ For building and running the application, you need:
 - **MySQL**: To serve as the application's database.
 
 ## Features
-- Register and loggin users to connect to the application
+- Register and log users to connect to the application
 - Handle rentals (get all rentals, create or modify one)
 - Send messages to other rental owners
 
