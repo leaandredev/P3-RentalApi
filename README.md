@@ -1,3 +1,12 @@
+## Badges
+
+![Java](https://img.shields.io/badge/Java-17-blue?logo=java&logoColor=white)
+![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.3.6-brightgreen?logo=springboot&logoColor=white)
+![MySQL](https://img.shields.io/badge/MySQL-8.0-blue?logo=mysql&logoColor=white)
+![JWT](https://img.shields.io/badge/JWT-Authentication-orange)
+![OpenAPI](https://img.shields.io/badge/OpenAPI-3.0.0-green?logo=openapiinitiative&logoColor=white)
+![Maven](https://img.shields.io/badge/Maven-Build%20Tool-C71A36?logo=apachemaven&logoColor=white)
+
 # Rental App API
 
 Rental App API is a backend application designed for managing rental locations.
