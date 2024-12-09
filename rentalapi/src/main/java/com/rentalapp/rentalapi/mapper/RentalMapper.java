@@ -1,5 +1,6 @@
 package com.rentalapp.rentalapi.mapper;
 
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 import org.springframework.stereotype.Component;
@@ -55,6 +56,7 @@ public class RentalMapper {
         rental.setPrice(Integer.valueOf(rentalRequest.getPrice()));
         rental.setSurface(Integer.valueOf(rentalRequest.getSurface()));
         rental.setDescription(rentalRequest.getDescription());
+        rental.setUpdatedAt(LocalDateTime.now());
         return rental;
     }
 
