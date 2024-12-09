@@ -26,11 +26,19 @@ import io.jsonwebtoken.security.Keys;
 @Configuration
 public class SpringSecurityConfig {
 
+    /** Secret key used to encode and decode JWT tokens */
     private final SecretKey jwtKey = Keys.secretKeyFor(SignatureAlgorithm.HS512);
 
     @Autowired
     private CustomUserDetailsService customUserDetailsService;
 
+    /**
+     * Configures the security filter chain and defining rules for endpoint access.
+     * 
+     * @param http the {@link HttpSecurity} object used to configure HTTP security
+     * @return a {@link SecurityFilterChain} object with the defined security rules
+     * @throws Exception
+     */
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http
@@ -46,6 +54,15 @@ public class SpringSecurityConfig {
                 .build();
     }
 
+    /**
+     * Creates and configures an {@link AuthenticationManager} bean, integrating a custom 
+     * {@link CustomUserDetailsService} and a password encoder for user authentication.
+     * 
+     * @param http the {@link HttpSecurity} object used to access the shared authentication manager builder
+     * @param bCryptPasswordEncoder the {@link BCryptPasswordEncoder} for encoding passwords
+     * @return an {@link AuthenticationManager} for authenticating users
+     * @throws Exception
+     */
     @Bean
     public AuthenticationManager authenticationManager(HttpSecurity http, BCryptPasswordEncoder bCryptPasswordEncoder)
             throws Exception {
@@ -57,16 +74,31 @@ public class SpringSecurityConfig {
         return authenticationManagerBuilder.build();
     }
 
+    /**
+     * Defines a {@link BCryptPasswordEncoder} bean to hash passwords securely using the BCrypt algorithm.
+     * 
+     * @return a new instance of {@link BCryptPasswordEncoder}
+     */
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
+    /**
+     * Defines a {@link JwtEncoder} bean to encode JWT tokens using the predefined secret key.
+     * 
+     * @return a {@link JwtEncoder} configured with the secret key
+     */
     @Bean
     public JwtEncoder jwtEncoder() {
         return new NimbusJwtEncoder(new ImmutableSecret<>(jwtKey.getEncoded()));
     }
 
+    /**
+     * Defines a {@link JwtDecoder} bean to decode JWT tokens using the predefined secret key.
+     * 
+     * @return a {@link JwtDecoder} configured with the secret key
+     */
     @Bean
     public JwtDecoder jwtDecoder() {
         return NimbusJwtDecoder.withSecretKey(jwtKey).build();
