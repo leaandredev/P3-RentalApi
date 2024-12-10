@@ -46,8 +46,8 @@ public class SpringSecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(
                         auth -> auth
-                                .requestMatchers("/swagger-ui/index.html", "/swagger-ui/**",
-                                        "/v3/api-docs/**", "/api/auth/**", "/openapi.yaml", "/uploads/**")
+                                .requestMatchers("/swagger-ui/**",
+                                        "/v3/api-docs/**", "/api/auth/**", "/api/file/**")
                                 .permitAll()
                                 .anyRequest().authenticated())
                 .oauth2ResourceServer((oauth2) -> oauth2.jwt(Customizer.withDefaults()))
@@ -55,11 +55,15 @@ public class SpringSecurityConfig {
     }
 
     /**
-     * Creates and configures an {@link AuthenticationManager} bean, integrating a custom 
-     * {@link CustomUserDetailsService} and a password encoder for user authentication.
+     * Creates and configures an {@link AuthenticationManager} bean, integrating a
+     * custom
+     * {@link CustomUserDetailsService} and a password encoder for user
+     * authentication.
      * 
-     * @param http the {@link HttpSecurity} object used to access the shared authentication manager builder
-     * @param bCryptPasswordEncoder the {@link BCryptPasswordEncoder} for encoding passwords
+     * @param http                  the {@link HttpSecurity} object used to access
+     *                              the shared authentication manager builder
+     * @param bCryptPasswordEncoder the {@link BCryptPasswordEncoder} for encoding
+     *                              passwords
      * @return an {@link AuthenticationManager} for authenticating users
      * @throws Exception
      */
@@ -75,7 +79,8 @@ public class SpringSecurityConfig {
     }
 
     /**
-     * Defines a {@link BCryptPasswordEncoder} bean to hash passwords securely using the BCrypt algorithm.
+     * Defines a {@link BCryptPasswordEncoder} bean to hash passwords securely using
+     * the BCrypt algorithm.
      * 
      * @return a new instance of {@link BCryptPasswordEncoder}
      */
@@ -85,7 +90,8 @@ public class SpringSecurityConfig {
     }
 
     /**
-     * Defines a {@link JwtEncoder} bean to encode JWT tokens using the predefined secret key.
+     * Defines a {@link JwtEncoder} bean to encode JWT tokens using the predefined
+     * secret key.
      * 
      * @return a {@link JwtEncoder} configured with the secret key
      */
@@ -95,7 +101,8 @@ public class SpringSecurityConfig {
     }
 
     /**
-     * Defines a {@link JwtDecoder} bean to decode JWT tokens using the predefined secret key.
+     * Defines a {@link JwtDecoder} bean to decode JWT tokens using the predefined
+     * secret key.
      * 
      * @return a {@link JwtDecoder} configured with the secret key
      */
