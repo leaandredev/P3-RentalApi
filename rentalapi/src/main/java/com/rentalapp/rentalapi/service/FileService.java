@@ -15,6 +15,9 @@ public class FileService {
 
     @Value("${app.base-url}")
     private String baseUrl;
+    
+    @Value("${app.upload-dir}")
+    private String uploadDir;
 
     /**
      * Save the file in local directory and return an accessible URL for the front
@@ -29,7 +32,6 @@ public class FileService {
         }
 
         try {
-            String uploadDir = "src/main/resources/static/uploads/";
             String fileName = System.currentTimeMillis() + "_" + file.getOriginalFilename();
             Path filePath = Paths.get(uploadDir, fileName);
             Files.createDirectories(filePath.getParent());
