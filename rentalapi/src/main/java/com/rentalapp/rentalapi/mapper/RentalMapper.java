@@ -35,7 +35,7 @@ public class RentalMapper {
                 .name(request.getName())
                 .surface(Integer.valueOf(request.getSurface()))
                 .price(Integer.valueOf(request.getPrice()))
-                .picture(fileService.saveFile(request.getPicture()))
+                .picture(fileService.savePicture(request.getPicture()))
                 .description(request.getDescription())
                 .owner(owner)
                 .build();

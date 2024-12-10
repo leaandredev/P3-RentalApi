@@ -7,6 +7,11 @@
   {
     "name": "app.upload-dir",
     "type": "java.lang.String",
-    "description": "A description for 'app.custom.upload-dir'"
+    "description": "Directory where the file (ex: rental picture) are stored"
+  },
+  {
+    "name": "app.file-api-route",
+    "type": "java.lang.String",
+    "description": "Route for API file controller"
   }
 ]}

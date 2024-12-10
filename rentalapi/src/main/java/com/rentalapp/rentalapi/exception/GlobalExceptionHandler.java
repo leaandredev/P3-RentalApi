@@ -38,14 +38,16 @@ public class GlobalExceptionHandler {
     }
 
     /**
-     * Handle {@link HttpMessageNotReadableException} and
-     * {@link DuplicateEntryException}
+     * Handle {@link HttpMessageNotReadableException},
+     * {@link DuplicateEntryException}, {@link IllegalContentTypeException} and
+     * {@link IllegalArgumentException}
      * 
      * @param exception the thrown exception
      * @return a {@link ResponseEntity} with {@link ErrorResponse} request and a bad
      *         request status (400)
      */
-    @ExceptionHandler({ HttpMessageNotReadableException.class, DuplicateEntryException.class })
+    @ExceptionHandler({ HttpMessageNotReadableException.class, DuplicateEntryException.class,
+            IllegalContentTypeException.class, IllegalArgumentException.class })
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ResponseEntity<ErrorResponse> handleBadequest(Exception exception) {
         log.error(exception.getMessage(), exception);
@@ -72,13 +74,13 @@ public class GlobalExceptionHandler {
     }
 
     /**
-     * Handle {@link NoEntryFoundException}
+     * Handle {@link NoEntryFoundException} and {@link FileNotFoundRuntimeException}
      * 
      * @param exception the thrown exception
      * @return a {@link ResponseEntity} with {@link ErrorResponse} request and a not
      *         found status (404)
      */
-    @ExceptionHandler(NoEntryFoundException.class)
+    @ExceptionHandler({ NoEntryFoundException.class, FileNotFoundRuntimeException.class })
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ResponseEntity<ErrorResponse> handleNoEntryFoundExceptions(NoEntryFoundException exception) {
         log.error(exception.getMessage(), exception);
