@@ -22,34 +22,34 @@ public class UserMapper {
     }
 
     /**
-     * Maps a {@link RegisterRequest} to a {@link User} entity
+     * Maps a {@link RegisterRequest} to a {@link User} entity using User builder
      * 
      * @param request the register request containing the input data.
      * @return a new {@link User} entity populated with the register request datas
      */
     public User requestToEntity(RegisterRequest request) {
-        return new User(
-                null,
-                request.getEmail(),
-                request.getName(),
-                passwordEncoder.encode(request.getPassword()),
-                null,
-                null);
+        return User.builder()
+                .email(request.getEmail())
+                .name(request.getName())
+                .password(passwordEncoder.encode(request.getPassword()))
+                .build();
     }
 
     /**
-     * Maps a {@link User} entity to a {@link UserResponse}
+     * Maps a {@link User} entity to a {@link UserResponse} using UserResponse
+     * builder
      * 
      * @param user the user entity to convert
      * @return a new {@link UserResponse} containing the user's data
      */
     public UserResponse entityToResponse(User user) {
-        return new UserResponse(
-                user.getId(),
-                user.getEmail(),
-                user.getName(),
-                user.getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy/MM/dd")),
-                user.getUpdatedAt().format(DateTimeFormatter.ofPattern("yyyy/MM/dd")));
+        return UserResponse.builder()
+                .id(user.getId())
+                .email(user.getEmail())
+                .name(user.getName())
+                .created_at(user.getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy/MM/dd")))
+                .updated_at(user.getUpdatedAt().format(DateTimeFormatter.ofPattern("yyyy/MM/dd")))
+                .build();
     }
 
 }

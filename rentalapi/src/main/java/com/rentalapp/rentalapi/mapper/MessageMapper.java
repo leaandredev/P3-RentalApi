@@ -22,19 +22,16 @@ public class MessageMapper {
     }
 
     /**
-     * Maps a {@link MessageRequest} to a {@link Message} entity
+     * Maps a {@link MessageRequest} to a {@link Message} entity using Message builder
      * 
      * @param request the message request containing the input data
      * @return a new {@link Message} entity populated with the data from the request
      */
     public Message requestToEntity(MessageRequest request) {
-        return new Message(
-                null,
-                rentalRepository.findById(request.getRental_id()).get(),
-                userRepository.findById(request.getUser_id()).get(),
-                request.getMessage(),
-                null,
-                null);
-
+        return Message.builder()
+                .owner(userRepository.findById(request.getUser_id()).get())
+                .rental(rentalRepository.findById(request.getRental_id()).get())
+                .message(request.getMessage())
+                .build();
     }
 }
