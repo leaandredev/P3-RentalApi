@@ -12,11 +12,13 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /** Entity representing a message sent by a user to a rental owner */
 @Data
+@Builder
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor

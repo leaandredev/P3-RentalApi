@@ -24,23 +24,21 @@ public class RentalMapper {
     }
 
     /**
-     * Maps a {@link RentalRequest} to a {@link Rental} entity.
+     * Maps a {@link RentalRequest} to a {@link Rental} entity using Rental builder
      *
      * @param request the rental request containing the input data.
      * @param owner   the owner of the rental, represented as a {@link User}.
      * @return a new {@link Rental} entity populated with the data from the request.
      */
     public Rental requestToEntity(RentalRequest request, User owner) {
-        return new Rental(
-                null,
-                request.getName(),
-                Integer.valueOf(request.getSurface()),
-                Integer.valueOf(request.getPrice()),
-                fileService.saveFile(request.getPicture()),
-                request.getDescription(),
-                owner,
-                null,
-                null);
+        return Rental.builder()
+                .name(request.getName())
+                .surface(Integer.valueOf(request.getSurface()))
+                .price(Integer.valueOf(request.getPrice()))
+                .picture(fileService.saveFile(request.getPicture()))
+                .description(request.getDescription())
+                .owner(owner)
+                .build();
     }
 
     /**
@@ -61,22 +59,23 @@ public class RentalMapper {
     }
 
     /**
-     * Maps a {@link Rental} entity to a {@link RentalResponse}.
+     * Maps a {@link Rental} entity to a {@link RentalResponse} using Rental builder
      *
      * @param rental the rental entity to convert.
      * @return a new {@link RentalResponse} containing the rental's data.
      */
     public RentalResponse entityToResponse(Rental rental) {
-        return new RentalResponse(
-                rental.getId(),
-                rental.getName(),
-                rental.getSurface(),
-                rental.getPrice(),
-                rental.getPicture(),
-                rental.getDescription(),
-                rental.getOwner().getId(),
-                rental.getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy/MM/dd")),
-                rental.getUpdatedAt().format(DateTimeFormatter.ofPattern("yyyy/MM/dd")));
+        return RentalResponse.builder()
+                .id(rental.getId())
+                .name(rental.getName())
+                .surface(rental.getSurface())
+                .price(rental.getPrice())
+                .picture(rental.getPicture())
+                .description(rental.getDescription())
+                .owner_id(rental.getOwner().getId())
+                .created_at(rental.getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy/MM/dd")))
+                .updated_at(rental.getUpdatedAt().format(DateTimeFormatter.ofPattern("yyyy/MM/dd")))
+                .build();
     }
 
 }
