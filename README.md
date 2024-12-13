@@ -38,6 +38,42 @@ Go in your project directory and install depedencies with maven :
 mvn install
 ```
 
+### Create the rental database
+
+Open a mysql client in your terminal and execute all those commands with your own database name, username and password:
+
+```
+CREATE DATABASE rental_api_db;
+CREATE USER 'your_user_name'@'localhost' IDENTIFIED BY 'your_password';
+GRANT ALL PRIVILEGES ON rental_api_db.* TO 'your_user_name'@'localhost';
+FLUSH PRIVILEGES;
+```
+
+Then get the SQL script for creating the schema is available here https://github.com/OpenClassrooms-Student-Center/Developpez-le-back-end-en-utilisant-Java-et-Spring.git 
+in the file ressources/sql/script.sql and execute the statements to create USERS, RENTALS and MESSAGES tables.
+
+The database parameters defined in src/main/application.properties use environnement variables :
+
+ ```
+#Mysql Database conf
+spring.datasource.url=${MYSQL_DATABASE_URL}
+spring.datasource.username=${MYSQL_DATABASE_USERNAME}
+spring.datasource.password=${MYSQL_DATABASE_PASSWORD}
+```
+
+so you must add define them in your conf files (.bashrc in Linux for exemple) this way :
+
+```
+export MYSQL_DATABASE_URL=jdbc:mysql://localhost:3306/rental_api_db
+export MYSQL_DATABASE_USERNAME=your_user_name
+export MYSQL_DATABASE_PASSWORD=your_password
+```
+Don't forget to refresh the config :
+
+```
+source ~/.bashrc
+```
+
 ### Run the server
 
 Run the Spring Boot application in your IDE or in the terminal using maver:
