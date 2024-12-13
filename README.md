@@ -38,41 +38,62 @@ Go in your project directory and install depedencies with maven :
 mvn install
 ```
 
-### Create the rental database
+### Create the Rental Database
 
-Open a mysql client in your terminal and execute all those commands with your own database name, username and password:
+1. **Set Up the Database**  
+   Open a MySQL client in your terminal or use a tool like MySQL Workbench, and execute the following commands. Replace `rental_api_db`, `your_user_name`, and `your_password` with your desired database name, username, and password:
 
-```
-CREATE DATABASE rental_api_db;
-CREATE USER 'your_user_name'@'localhost' IDENTIFIED BY 'your_password';
-GRANT ALL PRIVILEGES ON rental_api_db.* TO 'your_user_name'@'localhost';
-FLUSH PRIVILEGES;
-```
+   ```sql
+   CREATE DATABASE rental_api_db;
+   CREATE USER 'your_user_name'@'localhost' IDENTIFIED BY 'your_password';
+   GRANT ALL PRIVILEGES ON rental_api_db.* TO 'your_user_name'@'localhost';
+   FLUSH PRIVILEGES;
+   ```
 
-Then get the SQL script for creating the schema is available here https://github.com/OpenClassrooms-Student-Center/Developpez-le-back-end-en-utilisant-Java-et-Spring.git 
-in the file ressources/sql/script.sql and execute the statements to create USERS, RENTALS and MESSAGES tables.
+2. **Create Tables**  
+   Go to the front-end project repository available [here](https://github.com/OpenClassrooms-Student-Center/Developpez-le-back-end-en-utilisant-Java-et-Spring.git), locate the SQL script in `ressources/sql/script.sql`, and execute it in your MySQL client to create the required tables (`USERS`, `RENTALS`, and `MESSAGES`).
 
-The database parameters defined in src/main/application.properties use environnement variables :
+3. **Configure Database Access in the API Project**  
+   The application uses environment variables to define database parameters. In the `src/main/resources/application.properties` file, ensure the following lines are present:
 
- ```
-#Mysql Database conf
-spring.datasource.url=${MYSQL_DATABASE_URL}
-spring.datasource.username=${MYSQL_DATABASE_USERNAME}
-spring.datasource.password=${MYSQL_DATABASE_PASSWORD}
-```
+   ```properties
+   # MySQL Database Configuration
+   spring.datasource.url=${MYSQL_DATABASE_URL}
+   spring.datasource.username=${MYSQL_DATABASE_USERNAME}
+   spring.datasource.password=${MYSQL_DATABASE_PASSWORD}
+   ```
 
-so you must add define them in your conf files (.bashrc in Linux for exemple) this way :
+4. **Set Environment Variables**  
+   Configure the environment variables for your operating system:
 
-```
-export MYSQL_DATABASE_URL=jdbc:mysql://localhost:3306/rental_api_db
-export MYSQL_DATABASE_USERNAME=your_user_name
-export MYSQL_DATABASE_PASSWORD=your_password
-```
-Don't forget to refresh the config :
+   - **On Linux/macOS:**  
+     Add the following lines to your `~/.bashrc` (or `~/.zshrc` for macOS with zsh) file:  
+     ```bash
+     export MYSQL_DATABASE_URL=jdbc:mysql://localhost:3306/rental_api_db
+     export MYSQL_DATABASE_USERNAME=your_user_name
+     export MYSQL_DATABASE_PASSWORD=your_password
+     ```
+     Apply the changes:  
+     ```bash
+     source ~/.bashrc
+     ```
 
-```
-source ~/.bashrc
-```
+   - **On Windows (Command Prompt):**  
+     Set the environment variables temporarily for the current session:  
+     ```cmd
+     set MYSQL_DATABASE_URL=jdbc:mysql://localhost:3306/rental_api_db
+     set MYSQL_DATABASE_USERNAME=your_user_name
+     set MYSQL_DATABASE_PASSWORD=your_password
+     ```
+     For persistent variables, use the *System Properties* panel in Windows to add them under *Environment Variables*.
+
+   - **On Windows (PowerShell):**  
+     Use the following commands to set variables for the current session:  
+     ```powershell
+     $env:MYSQL_DATABASE_URL="jdbc:mysql://localhost:3306/rental_api_db"
+     $env:MYSQL_DATABASE_USERNAME="your_user_name"
+     $env:MYSQL_DATABASE_PASSWORD="your_password"
+     ```
 
 ### Run the server
 
